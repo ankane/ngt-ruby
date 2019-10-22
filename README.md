@@ -53,7 +53,7 @@ index.save
 Load an index
 
 ```ruby
-Ngt::Index.new(path)
+index = Ngt::Index.new(path)
 ```
 
 Get an object by id
