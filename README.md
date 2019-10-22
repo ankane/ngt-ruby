@@ -98,8 +98,7 @@ result = index.search(query, size: 3)
 
 result.each do |res|
   puts "#{res[:id]}, #{res[:distance]}"
-  object = index.object(res[:id])
-  p object
+  p index.object(res[:id])
 end
 ```
 
