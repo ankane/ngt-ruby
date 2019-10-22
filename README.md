@@ -2,6 +2,8 @@
 
 [NGT](https://github.com/yahoojapan/NGT) - high-speed approximate nearest neighbors - for Ruby
 
+[![Build Status](https://travis-ci.org/ankane/ngt.svg?branch=master)](https://travis-ci.org/ankane/ngt)
+
 ## Installation
 
 First, [install NGT](https://github.com/yahoojapan/NGT/blob/master/README.md#Installation).

@@ -12,6 +12,9 @@ module Ngt
     # https://github.com/yahoojapan/NGT/blob/master/lib/NGT/Capi.h
     # keep same order
 
+    # use uint32 instead of uint32_t
+    # to prevent "unable to resolve type" error on Ubuntu
+
     class ObjectDistance < ::FFI::Struct
       layout :id, :int,
         :distance, :float
@@ -36,15 +39,15 @@ module Ngt
     attach_function :ngt_set_property_distance_type_hamming, %i[pointer pointer], :bool
     attach_function :ngt_set_property_distance_type_jaccard, %i[pointer pointer], :bool
     attach_function :ngt_set_property_distance_type_cosine, %i[pointer pointer], :bool
-    attach_function :ngt_batch_insert_index, %i[pointer pointer uint32_t pointer pointer], :bool
-    attach_function :ngt_create_index, %i[pointer uint32_t pointer], :bool
+    attach_function :ngt_batch_insert_index, %i[pointer pointer uint32 pointer pointer], :bool
+    attach_function :ngt_create_index, %i[pointer uint32 pointer], :bool
     attach_function :ngt_remove_index, %i[pointer int pointer], :bool
-    attach_function :ngt_insert_index, %i[pointer pointer uint32_t pointer], :int
-    attach_function :ngt_insert_index_as_float, %i[pointer pointer uint32_t pointer], :int
+    attach_function :ngt_insert_index, %i[pointer pointer uint32 pointer], :int
+    attach_function :ngt_insert_index_as_float, %i[pointer pointer uint32 pointer], :int
     attach_function :ngt_create_empty_results, %i[pointer], :pointer
-    attach_function :ngt_search_index, %i[pointer pointer int32_t size_t float float pointer pointer], :bool
-    attach_function :ngt_get_result_size, %i[pointer pointer], :uint32_t
-    attach_function :ngt_get_result, %i[pointer uint32_t pointer], ObjectDistance.by_value
+    attach_function :ngt_search_index, %i[pointer pointer int32 size_t float float pointer pointer], :bool
+    attach_function :ngt_get_result_size, %i[pointer pointer], :uint32
+    attach_function :ngt_get_result, %i[pointer uint32 pointer], ObjectDistance.by_value
     attach_function :ngt_get_object_space, %i[pointer pointer], :pointer
     attach_function :ngt_get_object_as_float, %i[pointer int pointer], :pointer
     attach_function :ngt_get_object_as_integer, %i[pointer int pointer], :pointer

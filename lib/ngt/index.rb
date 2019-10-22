@@ -29,7 +29,7 @@ module Ngt
       obj = ::FFI::MemoryPointer.new(:float, flat_objects.size)
       obj.write_array_of_float(flat_objects)
 
-      ids = ::FFI::MemoryPointer.new(:uint32_t, objects.size)
+      ids = ::FFI::MemoryPointer.new(:uint32, objects.size)
       ffi(:ngt_batch_insert_index, @index, obj, objects.size, ids)
 
       build_index(num_threads: num_threads)
