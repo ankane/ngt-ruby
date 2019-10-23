@@ -12,6 +12,7 @@ Gem::Specification.new do |spec|
 
   spec.files         = Dir["*.{md,txt}", "{lib}/**/*"]
   spec.require_path  = "lib"
+  spec.extensions    = ["ext/ngt/extconf.rb"]
 
   spec.required_ruby_version = ">= 2.4"
 
@@ -21,4 +22,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake"
   spec.add_development_dependency "minitest", ">= 5"
   spec.add_development_dependency "numo-narray"
+  spec.add_development_dependency "rake-compiler"
 end
