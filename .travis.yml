@@ -1,14 +1,8 @@
 dist: xenial
 language: ruby
 rvm: 2.6.3
-before_install:
-  - export NGT_VERSION=1.7.10
-  - ./test/ci/install_ngt.sh
-  - export LD_LIBRARY_PATH=$HOME/ngt/$NGT_VERSION/build/lib/NGT:$LD_LIBRARY_PATH
 cache:
   bundler: true
-  directories:
-    - $HOME/ngt
 script: bundle exec rake test
 notifications:
   email:
