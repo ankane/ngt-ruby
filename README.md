@@ -6,7 +6,11 @@
 
 ## Installation
 
-First, [install NGT](https://github.com/yahoojapan/NGT/blob/master/README.md#Installation).
+First, [install NGT](https://github.com/yahoojapan/NGT/blob/master/README.md#Installation). For Homebrew, use:
+
+```sh
+brew install ngt
+```
 
 Add this line to your application’s Gemfile:
 
