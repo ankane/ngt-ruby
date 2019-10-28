@@ -1,4 +1,4 @@
-## 0.1.1 [unreleased]
+## 0.1.1
 
 - Fixed `unable to resolve type 'uint32_t'` error on Ubuntu
 
