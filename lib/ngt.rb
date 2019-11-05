@@ -11,7 +11,15 @@ module Ngt
   class << self
     attr_accessor :ffi_lib
   end
-  self.ffi_lib = ["libngt.dylib", "libngt.so", "ngt.dll"]
+  self.ffi_lib =
+    case RbConfig::CONFIG["host_os"]
+    when /mingw|mswin/i
+      ["ngt.dll"]
+    when /darwin/i
+      ["libngt.dylib"]
+    else
+      ["libngt.so"]
+    end
 
   # friendlier error message
   autoload :FFI, "ngt/ffi"
