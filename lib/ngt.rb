@@ -1,5 +1,6 @@
 # dependencies
-require "ffi"
+require "fiddle"
+require "fiddle/import"
 
 # modules
 require "ngt/index"

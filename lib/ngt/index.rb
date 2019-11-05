@@ -26,15 +26,14 @@ module Ngt
     def batch_insert(objects, num_threads: 8)
       objects = objects.to_a
       flat_objects = objects.flatten
-      obj = ::FFI::MemoryPointer.new(:float, flat_objects.size)
-      obj.write_array_of_float(flat_objects)
+      obj = Fiddle::Pointer[flat_objects.pack("e*")]
 
-      ids = ::FFI::MemoryPointer.new(:uint32, objects.size)
+      ids = Fiddle::Pointer.malloc(Fiddle::SIZEOF_INT * objects.size)
       ffi(:ngt_batch_insert_index, @index, obj, objects.size, ids)
 
       build_index(num_threads: num_threads)
 
-      ids.read_array_of_uint32(objects.size)
+      ids.to_str(ids.size).unpack("I*")
     end
 
     def build_index(num_threads: 8)
@@ -62,10 +61,10 @@ module Ngt
       result_size = ffi(:ngt_get_result_size, results)
       ret = []
       result_size.times do |i|
-        res = ffi(:ngt_get_result, results, i)
+        res = FFI::NGTObjectDistance.new(ffi(:ngt_get_result, results, i).ref)
         ret << {
-          id: res[:id],
-          distance: res[:distance]
+          id: res.id,
+          distance: res.distance
         }
       end
       ret
@@ -130,7 +129,7 @@ module Ngt
     def self.ffi(method, *args)
       res = FFI.send(method, *args)
       message = FFI.ngt_get_error_string(args.last)
-      raise Error, message unless message.empty?
+      raise Error, message unless message.to_s.empty?
       res
     end
 
@@ -153,9 +152,7 @@ module Ngt
     end
 
     def c_object(object)
-      c_object = ::FFI::MemoryPointer.new(:double, object.size)
-      c_object.write_array_of_double(object)
-      c_object
+      Fiddle::Pointer[object.pack("E*")]
     end
   end
 end
