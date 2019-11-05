@@ -1,5 +1,4 @@
 # dependencies
-require "fiddle"
 require "fiddle/import"
 
 # modules
