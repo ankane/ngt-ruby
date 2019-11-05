@@ -2,9 +2,11 @@ module Ngt
   module FFI
     extend Fiddle::Importer
 
+    libs = Ngt.ffi_lib.dup
     begin
-      dlload "libngt.dylib" # Ngt.ffi_lib.first
-    rescue LoadError => e
+      dlload libs.shift
+    rescue Fiddle::DLError => e
+      retry if libs.any?
       raise e if ENV["NGT_DEBUG"]
       raise LoadError, "Could not find NGT"
     end

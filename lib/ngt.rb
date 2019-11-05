@@ -11,7 +11,7 @@ module Ngt
   class << self
     attr_accessor :ffi_lib
   end
-  self.ffi_lib = ["ngt"]
+  self.ffi_lib = ["libngt.dylib", "libngt.so", "ngt.dll"]
 
   # friendlier error message
   autoload :FFI, "ngt/ffi"
