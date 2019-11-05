@@ -1,6 +1,8 @@
 dist: xenial
 language: ruby
-rvm: 2.6.3
+rvm:
+  - 2.6.3
+  - 2.4.0
 before_install:
   - export NGT_VERSION=1.7.10
   - ./test/ci/install_ngt.sh

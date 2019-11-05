@@ -26,14 +26,14 @@ module Ngt
     def batch_insert(objects, num_threads: 8)
       objects = objects.to_a
       flat_objects = objects.flatten
-      obj = Fiddle::Pointer[flat_objects.pack("f*")]
+      obj = pack(Fiddle::TYPE_FLOAT, flat_objects)
 
       ids = Fiddle::Pointer.malloc(Fiddle::SIZEOF_INT * objects.size)
       ffi(:ngt_batch_insert_index, @index, obj, objects.size, ids)
 
       build_index(num_threads: num_threads)
 
-      ids[0, ids.size].unpack("I*")
+      unpack(ids, Fiddle::TYPE_INT, objects.size)
     end
 
     def build_index(num_threads: 8)
@@ -152,7 +152,22 @@ module Ngt
     end
 
     def c_object(object)
-      Fiddle::Pointer[object.pack("d*")]
+      pack(Fiddle::TYPE_DOUBLE, object)
+    end
+
+    def pack(type, value)
+      fmt = Fiddle::PackInfo::PACK_MAP[type]
+      Fiddle::Pointer[Array(value).pack("#{fmt}*")]
+    end
+
+    def unpack(ptr, type, count = nil)
+      fmt = Fiddle::PackInfo::PACK_MAP[type]
+      size = Fiddle::PackInfo::SIZE_MAP[type]
+      if count
+        ptr[0, size * count].unpack("#{fmt}*")
+      else
+        ptr[0, size].unpack1(fmt)
+      end
     end
   end
 end
