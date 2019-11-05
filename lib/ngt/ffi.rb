@@ -30,7 +30,6 @@ module Ngt
       "ObjectID id",
       "float distance",
     ]
-    # typealias "NGTObjectDistance", "void*"
 
     extern "NGTIndex ngt_open_index(char *, NGTError)"
     extern "NGTIndex ngt_create_graph_and_tree(char *, NGTProperty, NGTError)"
