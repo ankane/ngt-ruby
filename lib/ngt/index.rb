@@ -163,7 +163,7 @@ module Ngt
     def unpack(ptr, type, count = nil)
       fmt = Fiddle::PackInfo::PACK_MAP[type]
       size = Fiddle::PackInfo::SIZE_MAP[type]
-      raise ArgumentError, "invalid memory access" if size * count > ptr.size
+      raise ArgumentError, "invalid memory access" if size * (count || 1) > ptr.size
       if count
         ptr[0, size * count].unpack("#{fmt}*")
       else
