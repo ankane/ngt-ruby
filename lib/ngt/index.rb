@@ -33,7 +33,7 @@ module Ngt
 
       build_index(num_threads: num_threads)
 
-      ids.to_str(ids.size).unpack("I*")
+      ids[0, ids.size].unpack("I*")
     end
 
     def build_index(num_threads: 8)
@@ -128,8 +128,8 @@ module Ngt
     # private
     def self.ffi(method, *args)
       res = FFI.send(method, *args)
-      message = FFI.ngt_get_error_string(args.last)
-      raise Error, message unless message.to_s.empty?
+      message = FFI.ngt_get_error_string(args.last).to_s
+      raise Error, message unless message.empty?
       res
     end
 
