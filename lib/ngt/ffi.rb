@@ -31,11 +31,11 @@ module Ngt
       "float distance",
     ]
 
-    extern "NGTIndex ngt_open_index(char *, NGTError)"
-    extern "NGTIndex ngt_create_graph_and_tree(char *, NGTProperty, NGTError)"
+    extern "NGTIndex ngt_open_index(const char *, NGTError)"
+    extern "NGTIndex ngt_create_graph_and_tree(const char *, NGTProperty, NGTError)"
     extern "NGTProperty ngt_create_property(NGTError)"
-    extern "bool ngt_save_index(NGTIndex, char *, NGTError)"
-    extern "bool ngt_get_property(NGTIndex, NGTProperty, NGTError)"
+    extern "bool ngt_save_index(NGTIndex, const char *, NGTError)" # removed const
+    extern "bool ngt_get_property(NGTIndex, NGTProperty, NGTError)" # removed const
     extern "int32_t ngt_get_property_dimension(NGTProperty, NGTError)"
     extern "bool ngt_set_property_dimension(NGTProperty, int32_t, NGTError)"
     extern "bool ngt_set_property_edge_size_for_creation(NGTProperty, int16_t, NGTError)"
@@ -58,7 +58,7 @@ module Ngt
     extern "bool ngt_search_index_as_float(NGTIndex, float*, int32_t, size_t, float, float, NGTObjectDistances, NGTError)"
     extern "int32_t ngt_get_size(NGTObjectDistances, NGTError)"
     extern "uint32_t ngt_get_result_size(NGTObjectDistances, NGTError)"
-    extern "NGTObjectDistance* ngt_get_result(NGTObjectDistances, uint32_t, NGTError)"
+    extern "NGTObjectDistance* ngt_get_result(NGTObjectDistances, uint32_t, NGTError)" # removed const, added *
     extern "ObjectID ngt_insert_index(NGTIndex, double*, uint32_t, NGTError)"
     extern "ObjectID ngt_append_index(NGTIndex, double*, uint32_t, NGTError)"
     extern "ObjectID ngt_insert_index_as_float(NGTIndex, float*, uint32_t, NGTError)"
@@ -77,7 +77,7 @@ module Ngt
     extern "int16_t ngt_get_property_edge_size_for_search(NGTProperty, NGTError)"
     extern "int32_t ngt_get_property_distance_type(NGTProperty, NGTError)"
     extern "NGTError ngt_create_error_object()"
-    extern "char *ngt_get_error_string(NGTError)"
+    extern "const char *ngt_get_error_string(NGTError)" # removed const
     extern "void ngt_clear_error_string(NGTError)"
     extern "void ngt_destroy_error_object(NGTError)"
   end
