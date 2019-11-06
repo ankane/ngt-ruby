@@ -88,7 +88,7 @@ module Ngt
       extern "bool ngt_optimizer_execute(NGTOptimizer, const char *, const char *, NGTError)"
       extern "bool ngt_optimizer_set(NGTOptimizer optimizer, int outgoing, int incoming, int nofqs, float baseAccuracyFrom, float baseAccuracyTo, float rateAccuracyFrom, float rateAccuracyTo, double qte, double m, NGTError error)"
       extern "void ngt_destroy_optimizer(NGTOptimizer)"
-    rescue Fiddle::DLError => e
+    rescue Fiddle::DLError
       # only available in 1.8.1+
     end
   end
