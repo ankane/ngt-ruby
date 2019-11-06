@@ -25,6 +25,7 @@ module Ngt
     typealias "NGTObjectSpace", "void*"
     typealias "NGTObjectDistances", "void*"
     typealias "NGTError", "void*"
+    typealias "NGTOptimizer", "void*"
 
     NGTObjectDistance = struct [
       "ObjectID id",
@@ -80,5 +81,15 @@ module Ngt
     extern "const char *ngt_get_error_string(NGTError)" # removed const
     extern "void ngt_clear_error_string(NGTError)"
     extern "void ngt_destroy_error_object(NGTError)"
+
+    begin
+      extern "NGTOptimizer ngt_create_optimizer(bool logDisabled, NGTError)"
+      extern "bool ngt_optimizer_adjust_search_coefficients(NGTOptimizer, const char *, NGTError)"
+      extern "bool ngt_optimizer_execute(NGTOptimizer, const char *, const char *, NGTError)"
+      extern "bool ngt_optimizer_set(NGTOptimizer optimizer, int outgoing, int incoming, int nofqs, float baseAccuracyFrom, float baseAccuracyTo, float rateAccuracyFrom, float rateAccuracyTo, double qte, double m, NGTError error)"
+      extern "void ngt_destroy_optimizer(NGTOptimizer)"
+    rescue Fiddle::DLError => e
+      # only available in 1.8.1+
+    end
   end
 end
