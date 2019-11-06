@@ -2,7 +2,9 @@
 require "ffi"
 
 # modules
+require "ngt/utils"
 require "ngt/index"
+require "ngt/optimizer"
 require "ngt/version"
 
 module Ngt

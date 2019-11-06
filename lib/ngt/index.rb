@@ -1,5 +1,7 @@
 module Ngt
   class Index
+    include Utils
+
     def initialize(path)
       @path = path
       @error = FFI.ngt_create_error_object
@@ -127,11 +129,8 @@ module Ngt
     end
 
     # private
-    def self.ffi(method, *args)
-      res = FFI.send(method, *args)
-      message = FFI.ngt_get_error_string(args.last)
-      raise Error, message unless message.empty?
-      res
+    def self.ffi(*args)
+      Utils.ffi(*args)
     end
 
     def self.finalize(error)
@@ -143,10 +142,6 @@ module Ngt
     end
 
     private
-
-    def ffi(*args)
-      self.class.ffi(*args, @error)
-    end
 
     def float?
       @float

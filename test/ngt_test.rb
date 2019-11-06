@@ -23,6 +23,24 @@ class NgtTest < Minitest::Test
     assert_in_delta 7.549834251403809, result[2][:distance]
   end
 
+  def test_optimizer
+    dim = 4
+    objects = [
+      [1, 1, 2, 1],
+      [5, 4, 6, 5],
+      [1, 2, 1, 2]
+    ]
+
+    path = Dir.mktmpdir
+    index = Ngt::Index.create(path, dim)
+    index.batch_insert(objects)
+    index.save
+
+    optimizer = Ngt::Optimizer.new(queries: 1)
+    optimizer.adjust_search_coefficients(path)
+    optimizer.execute(path, Dir.mktmpdir)
+  end
+
   def test_numo
     dim = 4
     objects = [

@@ -84,6 +84,13 @@ Build the index
 index.build_index
 ```
 
+Optimize the index [master]
+
+```ruby
+optimizer = Ngt::Optimizer.new(outgoing: 10, incoming: 120)
+optimizer.execute(path, new_path)
+```
+
 ## Full Example
 
 ```ruby
