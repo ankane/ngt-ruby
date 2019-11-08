@@ -3,4 +3,4 @@ Bundler.require(:default)
 require "minitest/autorun"
 require "minitest/pride"
 require "tmpdir"
-require "numo/narray"
+require "numo/narray" unless defined?(JRUBY_VERSION)

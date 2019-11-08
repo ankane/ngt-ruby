@@ -42,6 +42,8 @@ class NgtTest < Minitest::Test
   end
 
   def test_numo
+    skip if defined?(JRUBY_VERSION)
+
     dim = 4
     objects = [
       [1, 1, 2, 1],
