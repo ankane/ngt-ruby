@@ -5,7 +5,7 @@ Gem::Specification.new do |spec|
   spec.version       = Ngt::VERSION
   spec.summary       = "NGT - high-speed approximate nearest neighbors - for Ruby"
   spec.homepage      = "https://github.com/ankane/ngt"
-  spec.license       = "MIT"
+  spec.license       = "Apache-2.0"
 
   spec.author        = "Andrew Kane"
   spec.email         = "andrew@chartkick.com"
