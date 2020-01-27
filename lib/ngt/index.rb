@@ -24,19 +24,26 @@ module Ngt
       ffi(:ngt_insert_index, @index, c_object(object.to_a), @dimension)
     end
 
-    # TODO make more performant for Numo
     def batch_insert(objects, num_threads: 8)
-      objects = objects.to_a
-      flat_objects = objects.flatten
-      obj = ::FFI::MemoryPointer.new(:float, flat_objects.size)
-      obj.write_array_of_float(flat_objects)
+      if narray?(objects)
+        objects = objects.cast_to(Numo::SFloat) unless objects.is_a?(Numo::SFloat)
+        count = objects.shape[0]
+        obj = ::FFI::MemoryPointer.new(:char, objects.byte_size)
+        obj.write_bytes(objects.to_binary)
+      else
+        objects = objects.to_a
+        count = objects.size
+        flat_objects = objects.flatten
+        obj = ::FFI::MemoryPointer.new(:float, flat_objects.size)
+        obj.write_array_of_float(flat_objects)
+      end
 
-      ids = ::FFI::MemoryPointer.new(:uint32, objects.size)
-      ffi(:ngt_batch_insert_index, @index, obj, objects.size, ids)
+      ids = ::FFI::MemoryPointer.new(:uint32, count)
+      ffi(:ngt_batch_insert_index, @index, obj, count, ids)
 
       build_index(num_threads: num_threads)
 
-      ids.read_array_of_uint32(objects.size)
+      ids.read_array_of_uint32(count)
     end
 
     def build_index(num_threads: 8)
@@ -142,6 +149,10 @@ module Ngt
     end
 
     private
+
+    def narray?(data)
+      defined?(Numo::NArray) && data.is_a?(Numo::NArray)
+    end
 
     def float?
       @float
