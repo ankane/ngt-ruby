@@ -1,4 +1,4 @@
-## 0.1.2 (unreleased)
+## 0.2.0 (2020-01-26)
 
 - Changed to Apache 2.0 license to match NGT
 - Added shared libraries

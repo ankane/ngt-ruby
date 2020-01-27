@@ -3,7 +3,7 @@ require_relative "lib/ngt/version"
 Gem::Specification.new do |spec|
   spec.name          = "ngt"
   spec.version       = Ngt::VERSION
-  spec.summary       = "NGT - high-speed approximate nearest neighbors - for Ruby"
+  spec.summary       = "High-speed approximate nearest neighbors for Ruby"
   spec.homepage      = "https://github.com/ankane/ngt"
   spec.license       = "Apache-2.0"
 

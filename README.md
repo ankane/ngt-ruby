@@ -80,7 +80,7 @@ Build the index
 index.build_index
 ```
 
-Optimize the index [master]
+Optimize the index
 
 ```ruby
 optimizer = Ngt::Optimizer.new(outgoing: 10, incoming: 120)
