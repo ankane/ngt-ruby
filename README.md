@@ -6,17 +6,13 @@
 
 ## Installation
 
-First, [install NGT](https://github.com/yahoojapan/NGT/blob/master/README.md#Installation). For Homebrew, use:
-
-```sh
-brew install ngt
-```
-
 Add this line to your application’s Gemfile:
 
 ```ruby
 gem 'ngt'
 ```
+
+**Note:** NGT is not available for Windows yet
 
 ## Getting Started
 
@@ -148,11 +144,12 @@ Everyone is encouraged to help improve this project. Here are a few ways you can
 - Write, clarify, or fix documentation
 - Suggest or add new features
 
-To get started with development and testing:
+To get started with development:
 
 ```sh
 git clone https://github.com/ankane/ngt.git
 cd ngt
 bundle install
+bundle exec rake vendor:all
 bundle exec rake test
 ```

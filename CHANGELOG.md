@@ -1,6 +1,7 @@
 ## 0.1.2 (unreleased)
 
 - Changed to Apache 2.0 license to match NGT
+- Added shared libraries
 - Added optimizer
 
 ## 0.1.1 (2019-10-27)

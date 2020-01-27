@@ -13,7 +13,9 @@ module Ngt
   class << self
     attr_accessor :ffi_lib
   end
-  self.ffi_lib = ["ngt"]
+  lib_name = FFI.map_library_name("ngt")
+  vendor_lib = File.expand_path("../vendor/#{lib_name}", __dir__)
+  self.ffi_lib = [vendor_lib]
 
   # friendlier error message
   autoload :FFI, "ngt/ffi"
