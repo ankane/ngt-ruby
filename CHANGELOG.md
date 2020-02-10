@@ -1,3 +1,7 @@
+## 0.2.1 (unreleased)
+
+- Fixed illegal instruction error on some Linux platforms
+
 ## 0.2.0 (2020-01-26)
 
 - Changed to Apache 2.0 license to match NGT
