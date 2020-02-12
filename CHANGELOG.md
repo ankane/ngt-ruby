@@ -1,4 +1,4 @@
-## 0.2.2 (unreleased)
+## 0.2.2 (2020-02-11)
 
 - Fixed `Could not find NGT` error on some Linux platforms
 
