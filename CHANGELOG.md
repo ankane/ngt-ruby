@@ -1,3 +1,7 @@
+## 0.2.2 (unreleased)
+
+- Fixed `Could not find NGT` error on some Linux platforms
+
 ## 0.2.1 (2020-02-09)
 
 - Fixed illegal instruction error on some Linux platforms

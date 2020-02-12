@@ -5,8 +5,7 @@ module Ngt
     begin
       ffi_lib Ngt.ffi_lib
     rescue LoadError => e
-      raise e if ENV["NGT_DEBUG"]
-      raise LoadError, "Could not find NGT"
+      raise e
     end
 
     # https://github.com/yahoojapan/NGT/blob/master/lib/NGT/Capi.h
