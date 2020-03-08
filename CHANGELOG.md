@@ -11,6 +11,7 @@
 - Changed to Apache 2.0 license to match NGT
 - Added shared libraries
 - Added optimizer
+- Improved performance of `batch_insert` for Numo
 
 ## 0.1.1 (2019-10-27)
 
