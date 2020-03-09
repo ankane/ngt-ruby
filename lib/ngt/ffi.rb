@@ -36,18 +36,19 @@ module Ngt
     attach_function :ngt_set_property_distance_type_cosine, %i[pointer pointer], :bool
     attach_function :ngt_set_property_distance_type_normalized_angle, %i[pointer pointer], :bool
     attach_function :ngt_set_property_distance_type_normalized_cosine, %i[pointer pointer], :bool
-    attach_function :ngt_batch_insert_index, %i[pointer pointer uint32 pointer pointer], :bool
-    attach_function :ngt_create_index, %i[pointer uint32 pointer], :bool
-    attach_function :ngt_remove_index, %i[pointer int pointer], :bool
     attach_function :ngt_insert_index, %i[pointer pointer uint32 pointer], :int
     attach_function :ngt_insert_index_as_float, %i[pointer pointer uint32 pointer], :int
     attach_function :ngt_create_empty_results, %i[pointer], :pointer
     attach_function :ngt_search_index, %i[pointer pointer int32 size_t float float pointer pointer], :bool
     attach_function :ngt_get_result_size, %i[pointer pointer], :uint32
     attach_function :ngt_get_result, %i[pointer uint32 pointer], ObjectDistance.by_value
+    attach_function :ngt_batch_insert_index, %i[pointer pointer uint32 pointer pointer], :bool
+    attach_function :ngt_create_index, %i[pointer uint32 pointer], :bool
+    attach_function :ngt_remove_index, %i[pointer int pointer], :bool
     attach_function :ngt_get_object_space, %i[pointer pointer], :pointer
     attach_function :ngt_get_object_as_float, %i[pointer int pointer], :pointer
     attach_function :ngt_get_object_as_integer, %i[pointer int pointer], :pointer
+    attach_function :ngt_destroy_results, %i[pointer], :void
     attach_function :ngt_destroy_property, %i[pointer], :void
     attach_function :ngt_close_index, %i[pointer], :void
     attach_function :ngt_get_property_edge_size_for_creation, %i[pointer pointer], :int16

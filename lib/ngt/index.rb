@@ -85,6 +85,7 @@ module Ngt
           distance: res[:distance]
         }
       end
+      FFI.ngt_destroy_results(results)
       ret
     end
 
