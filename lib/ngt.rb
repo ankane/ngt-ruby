@@ -1,6 +1,9 @@
 # dependencies
 require "ffi"
 
+# stdlib
+require "tmpdir"
+
 # modules
 require "ngt/utils"
 require "ngt/index"

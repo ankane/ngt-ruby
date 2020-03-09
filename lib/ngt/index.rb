@@ -80,13 +80,27 @@ module Ngt
       ret
     end
 
-    def save(path: nil)
-      path ||= @path
+    def save(path2 = nil, path: nil)
+      warn "[ngt] Passing path as an option is deprecated" if path
+      path ||= path2 || @path
       ffi(:ngt_save_index, @index, path)
     end
 
     def close
       FFI.ngt_close_index(@index)
+    end
+
+    def self.new(dimension, path: nil, **options)
+      if dimension.is_a?(Integer) || path || options.any?
+        path ||= Dir.mktmpdir
+        create(path, dimension, **options)
+      else
+        super(dimension)
+      end
+    end
+
+    def self.load(path)
+      new(path)
     end
 
     def self.create(path, dimension, edge_size_for_creation: 10,

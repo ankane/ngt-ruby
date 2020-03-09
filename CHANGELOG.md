@@ -1,3 +1,8 @@
+## 0.2.3 (unreleased)
+
+- Prefer `new` over `create`
+- Added `load` method
+
 ## 0.2.2 (2020-02-11)
 
 - Fixed `Could not find NGT` error on some Linux platforms

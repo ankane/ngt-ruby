@@ -29,7 +29,7 @@ objects = [
 Create an index
 
 ```ruby
-index = Ngt::Index.create(path, dimensions)
+index = Ngt::Index.new(dimensions)
 ```
 
 Insert objects
@@ -47,13 +47,13 @@ index.search(query, size: 3)
 Save the index
 
 ```ruby
-index.save
+index.save(path)
 ```
 
 Load an index
 
 ```ruby
-index = Ngt::Index.new(path)
+index = Ngt::Index.load(path)
 ```
 
 Get an object by id
