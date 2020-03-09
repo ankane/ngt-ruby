@@ -4,7 +4,7 @@ module Ngt
 
     DISTANCE_TYPES = ["L1", "L2", "Hamming", "Angle", "Cosine", "NormalizedAngle", "NormalizedCosine", "Jaccard"]
 
-    attr_reader :dimensions, :distance_type, :edge_size_for_creation, :edge_size_for_search, :path
+    attr_reader :dimensions, :distance_type, :edge_size_for_creation, :edge_size_for_search, :object_type, :path
 
     def initialize(path)
       @path = path
@@ -16,13 +16,12 @@ module Ngt
 
       @dimensions = ffi(:ngt_get_property_dimension, property)
       @distance_type = DISTANCE_TYPES[ffi(:ngt_get_property_distance_type, property)]
-
-
       @edge_size_for_creation = ffi(:ngt_get_property_edge_size_for_creation, property)
       @edge_size_for_search = ffi(:ngt_get_property_edge_size_for_search, property)
 
       object_type = ffi(:ngt_get_property_object_type, property)
       @float = FFI.ngt_is_property_object_type_float(object_type)
+      @object_type = @float ? :float : :integer
 
       @object_space = ffi(:ngt_get_object_space, @index)
 
@@ -100,7 +99,7 @@ module Ngt
     end
 
     def self.new(dimensions, path: nil, edge_size_for_creation: 10,
-        edge_size_for_search: 40, object_type: "Float", distance_type: "L2")
+        edge_size_for_search: 40, object_type: :float, distance_type: "L2")
 
       # called from load
       return super(path) if path && dimensions.nil?
