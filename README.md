@@ -108,6 +108,20 @@ result.each do |res|
 end
 ```
 
+## Index Options
+
+Defaults shown below
+
+```ruby
+Ngt::Index.new(dimensions,
+  edge_size_for_creation: 10,
+  edge_size_for_search: 40,
+  object_type: :float, # :float, :integer
+  distance_type: :l2,  # :l1, :l2, :hamming, :angle, :cosine, or :jaccard
+  path: nil
+)
+```
+
 ## Data
 
 Data can be an array of arrays
