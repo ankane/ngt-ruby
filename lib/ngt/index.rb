@@ -12,7 +12,7 @@ module Ngt
       @property = ffi(:ngt_create_property)
       ffi(:ngt_get_property, @index, @property)
 
-      ObjectSpace.define_finalizer(self, self.class.finalize(@error, @property))
+      ObjectSpace.define_finalizer(self, self.class.finalize(@error, @index, @property))
     end
 
     def dimensions
@@ -188,10 +188,11 @@ module Ngt
       Utils.ffi(*args)
     end
 
-    def self.finalize(error, property)
+    def self.finalize(error, index, property)
       # must use proc instead of stabby lambda
       proc do
         FFI.ngt_destroy_error_object(error)
+        FFI.ngt_close_index(index)
         FFI.ngt_destroy_property(property)
       end
     end
