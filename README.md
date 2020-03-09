@@ -12,7 +12,7 @@ Add this line to your application’s Gemfile:
 gem 'ngt'
 ```
 
-NGT is not available for Windows yet
+NGT is not available for Windows
 
 ## Getting Started
 
