@@ -1,4 +1,4 @@
-## 0.2.3 (unreleased)
+## 0.2.3 (2020-03-08)
 
 - Added `load` method
 - Deprecated `create` and passing path to `new`
