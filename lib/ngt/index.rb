@@ -2,7 +2,7 @@ module Ngt
   class Index
     include Utils
 
-    attr_reader :dimension, :path
+    attr_reader :path
 
     def initialize(path)
       @path = path
@@ -90,6 +90,10 @@ module Ngt
 
     def close
       FFI.ngt_close_index(@index)
+    end
+
+    def dimensions
+      @dimension
     end
 
     def self.new(dimension, path: nil, edge_size_for_creation: 10,
