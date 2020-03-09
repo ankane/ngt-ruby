@@ -2,7 +2,7 @@ module Ngt
   class Index
     include Utils
 
-    attr_reader :dimensions, :path
+    attr_reader :dimensions, :edge_size_for_creation, :edge_size_for_search, :path
 
     def initialize(path)
       @path = path
@@ -13,6 +13,8 @@ module Ngt
       ffi(:ngt_get_property, @index, property)
 
       @dimensions = ffi(:ngt_get_property_dimension, property)
+      @edge_size_for_creation = ffi(:ngt_get_property_edge_size_for_creation, property)
+      @edge_size_for_search = ffi(:ngt_get_property_edge_size_for_search, property)
 
       object_type = ffi(:ngt_get_property_object_type, property)
       @float = FFI.ngt_is_property_object_type_float(object_type)

@@ -24,7 +24,6 @@ class IndexTest < Minitest::Test
     assert_in_delta 7.549834251403809, result[2][:distance]
 
     index = Ngt::Index.new(path)
-    assert_equal 4, index.dimensions
     result = index.search(query, size: 3)
     assert_equal [1, 3, 2], result.map { |r| r[:id] }
   end
@@ -37,9 +36,11 @@ class IndexTest < Minitest::Test
       [1, 2, 1, 2]
     ]
 
-    path = Dir.mktmpdir
     index = Ngt::Index.new(dim)
+    assert_equal 10, index.edge_size_for_creation
+    assert_equal 40, index.edge_size_for_search
     assert_equal [1, 2, 3], index.batch_insert(objects)
+    path = Dir.mktmpdir
     index.save(path)
 
     query = objects[0]
@@ -52,6 +53,7 @@ class IndexTest < Minitest::Test
     assert_in_delta 7.549834251403809, result[2][:distance]
 
     index = Ngt::Index.load(path)
+    assert_equal 4, index.dimensions
     result = index.search(query, size: 3)
     assert_equal [1, 3, 2], result.map { |r| r[:id] }
   end
