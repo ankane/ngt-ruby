@@ -2,11 +2,7 @@ module Ngt
   module FFI
     extend ::FFI::Library
 
-    begin
-      ffi_lib Ngt.ffi_lib
-    rescue LoadError => e
-      raise e
-    end
+    ffi_lib Ngt.ffi_lib
 
     # https://github.com/yahoojapan/NGT/blob/master/lib/NGT/Capi.h
     # keep same order
