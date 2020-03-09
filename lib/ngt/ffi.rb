@@ -15,6 +15,8 @@ module Ngt
         :distance, :float
     end
 
+    enum :distance_type, [:l1, :l2, :hamming, :angle, :cosine, :normalized_angle, :normalized_cosine, :jaccard]
+
     attach_function :ngt_open_index, %i[string pointer], :pointer
     attach_function :ngt_create_graph_and_tree, %i[string pointer pointer], :pointer
     attach_function :ngt_create_graph_and_tree_in_memory, %i[pointer pointer], :pointer
@@ -54,7 +56,7 @@ module Ngt
     attach_function :ngt_close_index, %i[pointer], :void
     attach_function :ngt_get_property_edge_size_for_creation, %i[pointer pointer], :int16
     attach_function :ngt_get_property_edge_size_for_search, %i[pointer pointer], :int16
-    attach_function :ngt_get_property_distance_type, %i[pointer pointer], :int32
+    attach_function :ngt_get_property_distance_type, %i[pointer pointer], :distance_type
     attach_function :ngt_create_error_object, %i[], :pointer
     attach_function :ngt_get_error_string, %i[pointer], :string
     attach_function :ngt_destroy_error_object, %i[pointer], :void

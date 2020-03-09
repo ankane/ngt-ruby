@@ -2,8 +2,6 @@ module Ngt
   class Index
     include Utils
 
-    DISTANCE_TYPES = [:l1, :l2, :hamming, :angle, :cosine, :normalized_angle, :normalized_cosine, :jaccard]
-
     attr_reader :path
 
     def initialize(index, path)
@@ -22,7 +20,7 @@ module Ngt
     end
 
     def distance_type
-      @distance_type ||= DISTANCE_TYPES[ffi(:ngt_get_property_distance_type, @property)]
+      @distance_type ||= ffi(:ngt_get_property_distance_type, @property)
     end
 
     def edge_size_for_creation
