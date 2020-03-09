@@ -15,11 +15,11 @@ module Ngt
     end
 
     def execute(in_index_path, out_index_path)
-      ffi(:ngt_optimizer_execute, @optimizer, in_index_path, out_index_path)
+      ffi(:ngt_optimizer_execute, @optimizer, path(in_index_path), out_index_path)
     end
 
     def adjust_search_coefficients(index_path)
-      ffi(:ngt_optimizer_adjust_search_coefficients, @optimizer, index_path)
+      ffi(:ngt_optimizer_adjust_search_coefficients, @optimizer, path(index_path))
     end
 
     def self.finalize(optimizer, error)
@@ -28,6 +28,12 @@ module Ngt
         FFI.ngt_destroy_optimizer(optimizer)
         FFI.ngt_destroy_error_object(error)
       end
+    end
+
+    private
+
+    def path(obj)
+      obj.is_a?(Ngt::Index) ? obj.path : obj
     end
   end
 end

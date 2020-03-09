@@ -2,6 +2,8 @@ module Ngt
   class Index
     include Utils
 
+    attr_reader :path
+
     def initialize(path)
       @path = path
       @error = FFI.ngt_create_error_object
