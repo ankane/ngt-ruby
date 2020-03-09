@@ -118,7 +118,7 @@ Ngt::Index.new(dimensions,
   edge_size_for_creation: 10,
   edge_size_for_search: 40,
   object_type: :float, # :float, :integer
-  distance_type: :l2,  # :l1, :l2, :hamming, :angle, :cosine, or :jaccard
+  distance_type: :l2,  # :l1, :l2, :hamming, :angle, :cosine, :normalized_angle, :normalized_cosine, :jaccard
   path: nil
 )
 ```
