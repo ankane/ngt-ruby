@@ -1,6 +1,6 @@
 require_relative "test_helper"
 
-class NgtTest < Minitest::Test
+class IndexTest < Minitest::Test
   def test_works
     dim = 4
     objects = [
@@ -9,7 +9,8 @@ class NgtTest < Minitest::Test
       [1, 2, 1, 2]
     ]
 
-    index = Ngt::Index.create(Dir.mktmpdir, dim)
+    path = Dir.mktmpdir
+    index = Ngt::Index.create(path, dim)
     assert_equal [1, 2, 3], index.batch_insert(objects)
     index.save
 
@@ -21,24 +22,10 @@ class NgtTest < Minitest::Test
     assert_equal 0, result[0][:distance]
     assert_in_delta 1.732050776481628, result[1][:distance]
     assert_in_delta 7.549834251403809, result[2][:distance]
-  end
 
-  def test_optimizer
-    dim = 4
-    objects = [
-      [1, 1, 2, 1],
-      [5, 4, 6, 5],
-      [1, 2, 1, 2]
-    ]
-
-    path = Dir.mktmpdir
-    index = Ngt::Index.create(path, dim)
-    index.batch_insert(objects)
-    index.save
-
-    optimizer = Ngt::Optimizer.new(queries: 1)
-    optimizer.adjust_search_coefficients(path)
-    optimizer.execute(path, Dir.mktmpdir)
+    index = Ngt::Index.new(path)
+    result = index.search(query, size: 3)
+    assert_equal [1, 3, 2], result.map { |r| r[:id] }
   end
 
   def test_numo
