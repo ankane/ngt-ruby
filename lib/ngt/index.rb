@@ -4,31 +4,44 @@ module Ngt
 
     DISTANCE_TYPES = [:l1, :l2, :hamming, :angle, :cosine, :normalized_angle, :normalized_cosine, :jaccard]
 
-    attr_reader :dimensions, :distance_type, :edge_size_for_creation, :edge_size_for_search, :object_type, :path
+    attr_reader :path
 
-    def initialize(index, property, error, path)
+    def initialize(index, path)
       @index = index
-      @error = error
       @path = path
 
-      @dimensions = ffi(:ngt_get_property_dimension, property)
-      @distance_type = DISTANCE_TYPES[ffi(:ngt_get_property_distance_type, property)]
-      @edge_size_for_creation = ffi(:ngt_get_property_edge_size_for_creation, property)
-      @edge_size_for_search = ffi(:ngt_get_property_edge_size_for_search, property)
+      @error = FFI.ngt_create_error_object
+      @property = ffi(:ngt_create_property)
+      ffi(:ngt_get_property, @index, @property)
 
-      object_type = ffi(:ngt_get_property_object_type, property)
-      @float = FFI.ngt_is_property_object_type_float(object_type)
-      @object_type = @float ? :float : :integer
+      ObjectSpace.define_finalizer(self, self.class.finalize(@error, @property))
+    end
 
-      @object_space = ffi(:ngt_get_object_space, @index)
+    def dimensions
+      @dimensions ||= ffi(:ngt_get_property_dimension, @property)
+    end
 
-      FFI.ngt_destroy_property(property)
+    def distance_type
+      @distance_type ||= DISTANCE_TYPES[ffi(:ngt_get_property_distance_type, @property)]
+    end
 
-      ObjectSpace.define_finalizer(self, self.class.finalize(@error))
+    def edge_size_for_creation
+      @edge_size_for_creation ||= ffi(:ngt_get_property_edge_size_for_creation, @property)
+    end
+
+    def edge_size_for_search
+      @edge_size_for_search ||= ffi(:ngt_get_property_edge_size_for_search, @property)
+    end
+
+    def object_type
+      @object_type ||= begin
+        object_type = ffi(:ngt_get_property_object_type, @property)
+        FFI.ngt_is_property_object_type_float(object_type) ? :float : :integer
+      end
     end
 
     def insert(object)
-      ffi(:ngt_insert_index, @index, c_object(object.to_a), @dimensions)
+      ffi(:ngt_insert_index, @index, c_object(object.to_a), dimensions)
     end
 
     def batch_insert(objects, num_threads: 8)
@@ -58,12 +71,12 @@ module Ngt
     end
 
     def object(id)
-      if float?
+      if object_type == :float
         res = ffi(:ngt_get_object_as_float, @object_space, id)
-        res.read_array_of_float(@dimensions)
+        res.read_array_of_float(dimensions)
       else
         res = ffi(:ngt_get_object_as_integer, @object_space, id)
-        res.read_array_of_uint8(@dimensions)
+        res.read_array_of_uint8(dimensions)
       end
     end
 
@@ -74,7 +87,7 @@ module Ngt
     def search(query, size: 20, epsilon: 0.1, radius: nil)
       radius ||= -1.0
       results = ffi(:ngt_create_empty_results)
-      ffi(:ngt_search_index, @index, c_object(query.to_a), @dimensions, size, epsilon, radius, results)
+      ffi(:ngt_search_index, @index, c_object(query.to_a), dimensions, size, epsilon, radius, results)
       result_size = ffi(:ngt_get_result_size, results)
       ret = []
       result_size.times do |i|
@@ -84,8 +97,9 @@ module Ngt
           distance: res[:distance]
         }
       end
-      FFI.ngt_destroy_results(results)
       ret
+    ensure
+      FFI.ngt_destroy_results(results) if results
     end
 
     def save(path2 = nil, path: nil)
@@ -102,7 +116,6 @@ module Ngt
         edge_size_for_search: 40, object_type: :float, distance_type: :l2)
 
       error = FFI.ngt_create_error_object
-      property = ffi(:ngt_create_property, error)
 
       # TODO remove in 0.3.0
       deprecated_create = !dimensions.is_a?(Integer) && !path
@@ -114,52 +127,54 @@ module Ngt
 
       if path && dimensions.nil?
         index = ffi(:ngt_open_index, path, error)
-        ffi(:ngt_get_property, index, property, error)
-        return super(index, property, error, path)
-      end
-
-      ffi(:ngt_set_property_dimension, property, dimensions, error)
-      ffi(:ngt_set_property_edge_size_for_creation, property, edge_size_for_creation, error)
-      ffi(:ngt_set_property_edge_size_for_search, property, edge_size_for_search, error)
-
-      case object_type.to_s.downcase
-      when "float"
-        ffi(:ngt_set_property_object_type_float, property, error)
-      when "integer"
-        ffi(:ngt_set_property_object_type_integer, property, error)
       else
-        raise ArgumentError, "Unknown object type: #{object_type}"
-      end
+        property = ffi(:ngt_create_property, error)
+        ffi(:ngt_set_property_dimension, property, dimensions, error)
+        ffi(:ngt_set_property_edge_size_for_creation, property, edge_size_for_creation, error)
+        ffi(:ngt_set_property_edge_size_for_search, property, edge_size_for_search, error)
 
-      case distance_type.to_s.downcase
-      when "l1"
-        ffi(:ngt_set_property_distance_type_l1, property, error)
-      when "l2"
-        ffi(:ngt_set_property_distance_type_l2, property, error)
-      when "angle"
-        ffi(:ngt_set_property_distance_type_angle, property, error)
-      when "hamming"
-        ffi(:ngt_set_property_distance_type_hamming, property, error)
-      when "jaccard"
-        ffi(:ngt_set_property_distance_type_jaccard, property, error)
-      when "cosine"
-        ffi(:ngt_set_property_distance_type_cosine, property, error)
-      when "normalized_angle"
-        ffi(:ngt_set_property_distance_type_normalized_angle, property, error)
-      when "normalized_cosine"
-        ffi(:ngt_set_property_distance_type_normalized_cosine, property, error)
-      else
-        raise ArgumentError, "Unknown distance type: #{distance_type}"
-      end
-
-      index =
-        if path
-          ffi(:ngt_create_graph_and_tree, path, property, error)
+        case object_type.to_s.downcase
+        when "float"
+          ffi(:ngt_set_property_object_type_float, property, error)
+        when "integer"
+          ffi(:ngt_set_property_object_type_integer, property, error)
         else
-          ffi(:ngt_create_graph_and_tree_in_memory, property, error)
+          raise ArgumentError, "Unknown object type: #{object_type}"
         end
 
-      super(index, property, error, path)
+        case distance_type.to_s.downcase
+        when "l1"
+          ffi(:ngt_set_property_distance_type_l1, property, error)
+        when "l2"
+          ffi(:ngt_set_property_distance_type_l2, property, error)
+        when "angle"
+          ffi(:ngt_set_property_distance_type_angle, property, error)
+        when "hamming"
+          ffi(:ngt_set_property_distance_type_hamming, property, error)
+        when "jaccard"
+          ffi(:ngt_set_property_distance_type_jaccard, property, error)
+        when "cosine"
+          ffi(:ngt_set_property_distance_type_cosine, property, error)
+        when "normalized_angle"
+          ffi(:ngt_set_property_distance_type_normalized_angle, property, error)
+        when "normalized_cosine"
+          ffi(:ngt_set_property_distance_type_normalized_cosine, property, error)
+        else
+          raise ArgumentError, "Unknown distance type: #{distance_type}"
+        end
+
+        index =
+          if path
+            ffi(:ngt_create_graph_and_tree, path, property, error)
+          else
+            ffi(:ngt_create_graph_and_tree_in_memory, property, error)
+          end
+      end
+
+      super(index, path)
+    ensure
+      FFI.ngt_destroy_error_object(error) if error
+      FFI.ngt_destroy_property(property) if property
     end
 
     def self.load(path)
@@ -176,11 +191,11 @@ module Ngt
       Utils.ffi(*args)
     end
 
-    def self.finalize(error)
+    def self.finalize(error, property)
       # must use proc instead of stabby lambda
       proc do
-        # TODO clean-up more objects
         FFI.ngt_destroy_error_object(error)
+        FFI.ngt_destroy_property(property)
       end
     end
 
@@ -188,10 +203,6 @@ module Ngt
 
     def narray?(data)
       defined?(Numo::NArray) && data.is_a?(Numo::NArray)
-    end
-
-    def float?
-      @float
     end
 
     def c_object(object)
