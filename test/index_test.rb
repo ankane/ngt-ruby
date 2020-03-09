@@ -1,7 +1,7 @@
 require_relative "test_helper"
 
 class IndexTest < Minitest::Test
-  def test_works
+  def test_deprecated
     dim = 4
     objects = [
       [1, 1, 2, 1],
@@ -28,7 +28,7 @@ class IndexTest < Minitest::Test
     assert_equal [1, 3, 2], result.map { |r| r[:id] }
   end
 
-  def test_new_load
+  def test_works
     dim = 4
     objects = [
       [1, 1, 2, 1],
