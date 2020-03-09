@@ -2,7 +2,7 @@ module Ngt
   class Index
     include Utils
 
-    attr_reader :path
+    attr_reader :dimensions, :path
 
     def initialize(path)
       @path = path
@@ -12,7 +12,7 @@ module Ngt
       property = ffi(:ngt_create_property)
       ffi(:ngt_get_property, @index, property)
 
-      @dimension = ffi(:ngt_get_property_dimension, property)
+      @dimensions = ffi(:ngt_get_property_dimension, property)
 
       object_type = ffi(:ngt_get_property_object_type, property)
       @float = FFI.ngt_is_property_object_type_float(object_type)
@@ -23,7 +23,7 @@ module Ngt
     end
 
     def insert(object)
-      ffi(:ngt_insert_index, @index, c_object(object.to_a), @dimension)
+      ffi(:ngt_insert_index, @index, c_object(object.to_a), @dimensions)
     end
 
     def batch_insert(objects, num_threads: 8)
@@ -55,10 +55,10 @@ module Ngt
     def object(id)
       if float?
         res = ffi(:ngt_get_object_as_float, @object_space, id)
-        res.read_array_of_float(@dimension)
+        res.read_array_of_float(@dimensions)
       else
         res = ffi(:ngt_get_object_as_integer, @object_space, id)
-        res.read_array_of_uint8(@dimension)
+        res.read_array_of_uint8(@dimensions)
       end
     end
 
@@ -69,7 +69,7 @@ module Ngt
     def search(query, size: 20, epsilon: 0.1, radius: nil)
       radius ||= -1.0
       results = ffi(:ngt_create_empty_results)
-      ffi(:ngt_search_index, @index, c_object(query.to_a), @dimension, size, epsilon, radius, results)
+      ffi(:ngt_search_index, @index, c_object(query.to_a), @dimensions, size, epsilon, radius, results)
       result_size = ffi(:ngt_get_result_size, results)
       ret = []
       result_size.times do |i|
@@ -92,27 +92,23 @@ module Ngt
       FFI.ngt_close_index(@index)
     end
 
-    def dimensions
-      @dimension
-    end
-
-    def self.new(dimension, path: nil, edge_size_for_creation: 10,
+    def self.new(dimensions, path: nil, edge_size_for_creation: 10,
         edge_size_for_search: 40, object_type: "Float", distance_type: "L2")
 
       # called from load
-      return super(path) if path && dimension.nil?
+      return super(path) if path && dimensions.nil?
 
       # TODO remove in 0.3.0
-      create = dimension.is_a?(Integer) || path
+      create = dimensions.is_a?(Integer) || path
       unless create
         warn "[ngt] Passing a path to new is deprecated - use load instead"
-        return super(dimension)
+        return super(dimensions)
       end
 
       path ||= Dir.mktmpdir
       error = FFI.ngt_create_error_object
       property = ffi(:ngt_create_property, error)
-      ffi(:ngt_set_property_dimension, property, dimension, error)
+      ffi(:ngt_set_property_dimension, property, dimensions, error)
       ffi(:ngt_set_property_edge_size_for_creation, property, edge_size_for_creation, error)
       ffi(:ngt_set_property_edge_size_for_search, property, edge_size_for_search, error)
 
@@ -157,9 +153,9 @@ module Ngt
       new(nil, path: path)
     end
 
-    def self.create(path, dimension, **options)
+    def self.create(path, dimensions, **options)
       warn "[ngt] create is deprecated - use new instead"
-      new(dimension, path: path, **options)
+      new(dimensions, path: path, **options)
     end
 
     # private
