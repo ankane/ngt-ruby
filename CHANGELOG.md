@@ -2,7 +2,7 @@
 
 - Updated NGT to 1.9.1
 - Added support for passing an index to optimizers
-- Added `dimensions`, `edge_size_for_creation`, and `edge_size_for_search` methods
+- Added `dimensions`, `distance_type`, `edge_size_for_creation`, and `edge_size_for_search` methods
 
 ## 0.2.3 (2020-03-08)
 
