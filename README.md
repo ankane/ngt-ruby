@@ -84,7 +84,8 @@ Optimize the index
 
 ```ruby
 optimizer = Ngt::Optimizer.new(outgoing: 10, incoming: 120)
-optimizer.execute(path, new_path)
+optimizer.adjust_search_coefficients(index)
+optimizer.execute(index, new_path)
 ```
 
 ## Full Example
@@ -119,6 +120,24 @@ Ngt::Index.new(dimensions,
   object_type: :float, # :float, :integer
   distance_type: :l2,  # :l1, :l2, :hamming, :angle, :cosine, or :jaccard
   path: nil
+)
+```
+
+## Optimizer Options
+
+Defaults shown below
+
+```ruby
+Ngt::Optimizer.new(
+  outgoing: 10,
+  incoming: 120,
+  queries: 100,
+  low_accuracy_from: 0.3,
+  low_accuracy_to: 0.5,
+  high_accuracy_from: 0.8,
+  high_accuracy_to: 0.9,
+  gt_epsilon: 0.1,
+  merge: 0.2
 )
 ```
 
