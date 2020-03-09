@@ -1,3 +1,7 @@
+## 0.2.4 (unreleased)
+
+- Updated NGT to 1.9.1
+
 ## 0.2.3 (2020-03-08)
 
 - Added `load` method
