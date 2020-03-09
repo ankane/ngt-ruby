@@ -1,4 +1,4 @@
-## 0.2.4 (unreleased)
+## 0.2.4 (2020-03-09)
 
 - Updated NGT to 1.9.1
 - Added support for passing an index to optimizers
