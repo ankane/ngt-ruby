@@ -96,9 +96,8 @@ objects = []
   objects << dim.times.map { rand(100) }
 end
 
-index = Ngt::Index.create("tmp", dim)
+index = Ngt::Index.new(dim)
 index.batch_insert(objects)
-index.save
 
 query = objects[0]
 result = index.search(query, size: 3)
