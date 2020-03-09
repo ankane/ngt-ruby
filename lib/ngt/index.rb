@@ -6,13 +6,10 @@ module Ngt
 
     attr_reader :dimensions, :distance_type, :edge_size_for_creation, :edge_size_for_search, :object_type, :path
 
-    def initialize(path)
+    def initialize(index, property, error, path)
+      @index = index
+      @error = error
       @path = path
-      @error = FFI.ngt_create_error_object
-      @index = ffi(:ngt_open_index, path)
-
-      property = ffi(:ngt_create_property)
-      ffi(:ngt_get_property, @index, property)
 
       @dimensions = ffi(:ngt_get_property_dimension, property)
       @distance_type = DISTANCE_TYPES[ffi(:ngt_get_property_distance_type, property)]
@@ -24,6 +21,8 @@ module Ngt
       @object_type = @float ? :float : :integer
 
       @object_space = ffi(:ngt_get_object_space, @index)
+
+      FFI.ngt_destroy_property(property)
 
       ObjectSpace.define_finalizer(self, self.class.finalize(@error))
     end
@@ -91,8 +90,8 @@ module Ngt
 
     def save(path2 = nil, path: nil)
       warn "[ngt] Passing path as an option is deprecated - use an argument instead" if path
-      path ||= path2 || @path
-      ffi(:ngt_save_index, @index, path)
+      @path = path || path2 || @path || Dir.mktmpdir
+      ffi(:ngt_save_index, @index, @path)
     end
 
     def close
@@ -102,19 +101,23 @@ module Ngt
     def self.new(dimensions, path: nil, edge_size_for_creation: 10,
         edge_size_for_search: 40, object_type: :float, distance_type: :l2)
 
-      # called from load
-      return super(path) if path && dimensions.nil?
-
-      # TODO remove in 0.3.0
-      create = dimensions.is_a?(Integer) || path
-      unless create
-        warn "[ngt] Passing a path to new is deprecated - use load instead"
-        return super(dimensions)
-      end
-
-      path ||= Dir.mktmpdir
       error = FFI.ngt_create_error_object
       property = ffi(:ngt_create_property, error)
+
+      # TODO remove in 0.3.0
+      deprecated_create = !dimensions.is_a?(Integer) && !path
+      if deprecated_create
+        warn "[ngt] Passing a path to new is deprecated - use load instead"
+        path = dimensions
+        dimensions = nil
+      end
+
+      if path && dimensions.nil?
+        index = ffi(:ngt_open_index, path, error)
+        ffi(:ngt_get_property, index, property, error)
+        return super(index, property, error, path)
+      end
+
       ffi(:ngt_set_property_dimension, property, dimensions, error)
       ffi(:ngt_set_property_edge_size_for_creation, property, edge_size_for_creation, error)
       ffi(:ngt_set_property_edge_size_for_search, property, edge_size_for_search, error)
@@ -149,15 +152,14 @@ module Ngt
         raise ArgumentError, "Unknown distance type: #{distance_type}"
       end
 
-      index = ffi(:ngt_create_graph_and_tree, path, property, error)
-      FFI.ngt_close_index(index)
-      index = nil
+      index =
+        if path
+          ffi(:ngt_create_graph_and_tree, path, property, error)
+        else
+          ffi(:ngt_create_graph_and_tree_in_memory, property, error)
+        end
 
-      super(path)
-    ensure
-      FFI.ngt_destroy_error_object(error) if error
-      FFI.ngt_destroy_property(property) if property
-      FFI.ngt_close_index(index) if index
+      super(index, property, error, path)
     end
 
     def self.load(path)

@@ -86,7 +86,7 @@ class IndexTest < Minitest::Test
 
   def test_ffi_error
     error = assert_raises(Ngt::Error) do
-      Ngt::Index.new(0)
+      Ngt::Index.new(0, path: Dir.mktmpdir)
     end
     assert_match "Dimension is not specified", error.message
   end

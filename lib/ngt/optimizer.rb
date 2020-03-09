@@ -33,7 +33,12 @@ module Ngt
     private
 
     def path(obj)
-      obj.is_a?(Ngt::Index) ? obj.path : obj
+      if obj.is_a?(Ngt::Index)
+        raise ArgumentError, "Index not saved" unless obj.path
+        obj.path
+      else
+        obj
+      end
     end
   end
 end

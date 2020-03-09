@@ -1,5 +1,6 @@
-## 0.2.5 (unreleased)
+## 0.3.0 (unreleased)
 
+- Create index in memory if no path specified
 - Added `normalized_angle` and `normalized_cosine`
 
 ## 0.2.4 (2020-03-09)

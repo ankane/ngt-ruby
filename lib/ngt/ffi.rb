@@ -17,6 +17,7 @@ module Ngt
 
     attach_function :ngt_open_index, %i[string pointer], :pointer
     attach_function :ngt_create_graph_and_tree, %i[string pointer pointer], :pointer
+    attach_function :ngt_create_graph_and_tree_in_memory, %i[pointer pointer], :pointer
     attach_function :ngt_create_property, %i[pointer], :pointer
     attach_function :ngt_save_index, %i[pointer string pointer], :bool
     attach_function :ngt_get_property, %i[pointer pointer pointer], :bool
