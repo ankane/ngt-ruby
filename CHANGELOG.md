@@ -1,3 +1,7 @@
+## 0.2.5 (unreleased)
+
+- Added `normalized_angle` and `normalized_cosine`
+
 ## 0.2.4 (2020-03-09)
 
 - Updated NGT to 1.9.1

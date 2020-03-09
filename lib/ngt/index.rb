@@ -140,6 +140,10 @@ module Ngt
         ffi(:ngt_set_property_distance_type_jaccard, property, error)
       when "cosine"
         ffi(:ngt_set_property_distance_type_cosine, property, error)
+      when "normalized_angle"
+        ffi(:ngt_set_property_distance_type_normalized_angle, property, error)
+      when "normalized_cosine"
+        ffi(:ngt_set_property_distance_type_normalized_cosine, property, error)
       else
         raise ArgumentError, "Unknown distance type: #{distance_type}"
       end

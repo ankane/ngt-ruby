@@ -34,6 +34,8 @@ module Ngt
     attach_function :ngt_set_property_distance_type_hamming, %i[pointer pointer], :bool
     attach_function :ngt_set_property_distance_type_jaccard, %i[pointer pointer], :bool
     attach_function :ngt_set_property_distance_type_cosine, %i[pointer pointer], :bool
+    attach_function :ngt_set_property_distance_type_normalized_angle, %i[pointer pointer], :bool
+    attach_function :ngt_set_property_distance_type_normalized_cosine, %i[pointer pointer], :bool
     attach_function :ngt_batch_insert_index, %i[pointer pointer uint32 pointer pointer], :bool
     attach_function :ngt_create_index, %i[pointer uint32 pointer], :bool
     attach_function :ngt_remove_index, %i[pointer int pointer], :bool
