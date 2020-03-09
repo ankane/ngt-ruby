@@ -10,9 +10,9 @@ class OptimizerTest < Minitest::Test
     ]
 
     path = Dir.mktmpdir
-    index = Ngt::Index.create(path, dim)
+    index = Ngt::Index.new(dim)
     index.batch_insert(objects)
-    index.save
+    index.save(path)
 
     optimizer = Ngt::Optimizer.new(queries: 1)
     optimizer.adjust_search_coefficients(path)

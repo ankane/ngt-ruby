@@ -64,7 +64,7 @@ class IndexTest < Minitest::Test
     ]
     objects = Numo::DFloat.cast(objects)
 
-    index = Ngt::Index.create(Dir.mktmpdir, dim)
+    index = Ngt::Index.new(dim)
     assert_equal [1, 2, 3], index.batch_insert(objects)
     index.save
 
@@ -80,20 +80,20 @@ class IndexTest < Minitest::Test
 
   def test_ffi_error
     assert_raises Ngt::Error do
-      Ngt::Index.create(Dir.mktmpdir, 0)
+      Ngt::Index.new(0)
     end
   end
 
   def test_bad_object_type
     error = assert_raises ArgumentError do
-      Ngt::Index.create(Dir.mktmpdir, 10, object_type: "bad")
+      Ngt::Index.new(10, object_type: "bad")
     end
     assert_equal "Unknown object type: bad", error.message
   end
 
   def test_bad_distance_type
     error = assert_raises ArgumentError do
-      Ngt::Index.create(Dir.mktmpdir, 10, distance_type: "bad")
+      Ngt::Index.new(10, distance_type: "bad")
     end
     assert_equal "Unknown distance type: bad", error.message
   end
