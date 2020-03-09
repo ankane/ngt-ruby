@@ -118,8 +118,7 @@ module Ngt
       error = FFI.ngt_create_error_object
 
       # TODO remove in 0.4.0
-      deprecated_create = !dimensions.is_a?(Integer) && !path
-      if deprecated_create
+      if !dimensions.is_a?(Integer) && !path
         warn "[ngt] Passing a path to new is deprecated - use load instead"
         path = dimensions
         dimensions = nil
