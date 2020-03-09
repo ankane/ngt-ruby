@@ -81,7 +81,7 @@ module Ngt
     end
 
     def save(path2 = nil, path: nil)
-      warn "[ngt] Passing path as an option is deprecated" if path
+      warn "[ngt] Passing path as an option is deprecated - use an argument instead" if path
       path ||= path2 || @path
       ffi(:ngt_save_index, @index, path)
     end
@@ -90,22 +90,20 @@ module Ngt
       FFI.ngt_close_index(@index)
     end
 
-    def self.new(dimension, path: nil, **options)
-      if dimension.is_a?(Integer) || path || options.any?
-        path ||= Dir.mktmpdir
-        create(path, dimension, **options)
-      else
-        super(dimension)
-      end
-    end
-
-    def self.load(path)
-      new(path)
-    end
-
-    def self.create(path, dimension, edge_size_for_creation: 10,
+    def self.new(dimension, path: nil, edge_size_for_creation: 10,
         edge_size_for_search: 40, object_type: "Float", distance_type: "L2")
 
+      # called from load
+      return super(path) if path && dimension.nil?
+
+      # TODO remove in 0.3.0
+      create = dimension.is_a?(Integer) || path
+      unless create
+        warn "[ngt] Passing a path to new is deprecated - use load instead"
+        return super(dimension)
+      end
+
+      path ||= Dir.mktmpdir
       error = FFI.ngt_create_error_object
       property = ffi(:ngt_create_property, error)
       ffi(:ngt_set_property_dimension, property, dimension, error)
@@ -142,11 +140,20 @@ module Ngt
       FFI.ngt_close_index(index)
       index = nil
 
-      Index.new(path)
+      super(path)
     ensure
       FFI.ngt_destroy_error_object(error) if error
       FFI.ngt_destroy_property(property) if property
       FFI.ngt_close_index(index) if index
+    end
+
+    def self.load(path)
+      new(nil, path: path)
+    end
+
+    def self.create(path, dimension, **options)
+      warn "[ngt] create is deprecated - use new instead"
+      new(dimension, path: path, **options)
     end
 
     # private

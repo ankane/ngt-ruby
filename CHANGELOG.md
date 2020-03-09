@@ -1,7 +1,7 @@
 ## 0.2.3 (unreleased)
 
-- Prefer `new` over `create`
 - Added `load` method
+- Deprecated `create` and passing path to `new`
 
 ## 0.2.2 (2020-02-11)
 
