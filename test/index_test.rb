@@ -37,7 +37,7 @@ class IndexTest < Minitest::Test
     ]
 
     index = Ngt::Index.new(dim)
-    assert_equal "L2", index.distance_type
+    assert_equal :l2, index.distance_type
     assert_equal 10, index.edge_size_for_creation
     assert_equal 40, index.edge_size_for_search
     assert_equal :float, index.object_type

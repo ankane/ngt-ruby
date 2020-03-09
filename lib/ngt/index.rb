@@ -2,7 +2,7 @@ module Ngt
   class Index
     include Utils
 
-    DISTANCE_TYPES = ["L1", "L2", "Hamming", "Angle", "Cosine", "NormalizedAngle", "NormalizedCosine", "Jaccard"]
+    DISTANCE_TYPES = [:l1, :l2, :hamming, :angle, :cosine, :normalized_angle, :normalized_cosine, :jaccard]
 
     attr_reader :dimensions, :distance_type, :edge_size_for_creation, :edge_size_for_search, :object_type, :path
 
@@ -99,7 +99,7 @@ module Ngt
     end
 
     def self.new(dimensions, path: nil, edge_size_for_creation: 10,
-        edge_size_for_search: 40, object_type: :float, distance_type: "L2")
+        edge_size_for_search: 40, object_type: :float, distance_type: :l2)
 
       # called from load
       return super(path) if path && dimensions.nil?
@@ -118,27 +118,27 @@ module Ngt
       ffi(:ngt_set_property_edge_size_for_creation, property, edge_size_for_creation, error)
       ffi(:ngt_set_property_edge_size_for_search, property, edge_size_for_search, error)
 
-      case object_type.to_s
-      when "Float", "float"
+      case object_type.to_s.downcase
+      when "float"
         ffi(:ngt_set_property_object_type_float, property, error)
-      when "Integer", "integer"
+      when "integer"
         ffi(:ngt_set_property_object_type_integer, property, error)
       else
         raise ArgumentError, "Unknown object type: #{object_type}"
       end
 
-      case distance_type.to_s
-      when "L1"
+      case distance_type.to_s.downcase
+      when "l1"
         ffi(:ngt_set_property_distance_type_l1, property, error)
-      when "L2"
+      when "l2"
         ffi(:ngt_set_property_distance_type_l2, property, error)
-      when "Angle"
+      when "angle"
         ffi(:ngt_set_property_distance_type_angle, property, error)
-      when "Hamming"
+      when "hamming"
         ffi(:ngt_set_property_distance_type_hamming, property, error)
-      when "Jaccard"
+      when "jaccard"
         ffi(:ngt_set_property_distance_type_jaccard, property, error)
-      when "Cosine"
+      when "cosine"
         ffi(:ngt_set_property_distance_type_cosine, property, error)
       else
         raise ArgumentError, "Unknown distance type: #{distance_type}"
