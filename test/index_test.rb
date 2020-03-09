@@ -79,20 +79,21 @@ class IndexTest < Minitest::Test
   end
 
   def test_ffi_error
-    assert_raises Ngt::Error do
+    error = assert_raises(Ngt::Error) do
       Ngt::Index.new(0)
     end
+    assert_match "Dimension is not specified", error.message
   end
 
   def test_bad_object_type
-    error = assert_raises ArgumentError do
+    error = assert_raises(ArgumentError) do
       Ngt::Index.new(10, object_type: "bad")
     end
     assert_equal "Unknown object type: bad", error.message
   end
 
   def test_bad_distance_type
-    error = assert_raises ArgumentError do
+    error = assert_raises(ArgumentError) do
       Ngt::Index.new(10, distance_type: "bad")
     end
     assert_equal "Unknown distance type: bad", error.message
