@@ -2,6 +2,7 @@
 
 - Updated NGT to 1.9.1
 - Added support for passing an index to optimizers
+- Added `dimension` method
 
 ## 0.2.3 (2020-03-08)
 

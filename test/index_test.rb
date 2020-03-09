@@ -24,6 +24,7 @@ class IndexTest < Minitest::Test
     assert_in_delta 7.549834251403809, result[2][:distance]
 
     index = Ngt::Index.new(path)
+    assert_equal 4, index.dimension
     result = index.search(query, size: 3)
     assert_equal [1, 3, 2], result.map { |r| r[:id] }
   end

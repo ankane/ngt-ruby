@@ -2,7 +2,7 @@ module Ngt
   class Index
     include Utils
 
-    attr_reader :path
+    attr_reader :dimension, :path
 
     def initialize(path)
       @path = path
