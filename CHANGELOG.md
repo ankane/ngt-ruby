@@ -1,4 +1,4 @@
-## 0.3.0 (unreleased)
+## 0.3.0 (2020-03-25)
 
 - Updated NGT to 1.10.0
 - Added support for OpenMP on Mac
