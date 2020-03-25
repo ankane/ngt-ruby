@@ -1,5 +1,7 @@
 ## 0.3.0 (unreleased)
 
+- Updated NGT to 1.10.0
+- Added support for OpenMP on Mac
 - Create index in memory if no path specified
 - Added `normalized_angle` and `normalized_cosine`
 

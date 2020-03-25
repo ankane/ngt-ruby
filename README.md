@@ -12,6 +12,12 @@ Add this line to your application’s Gemfile:
 gem 'ngt'
 ```
 
+On Mac, also install OpenMP:
+
+```sh
+brew install libomp
+```
+
 NGT is not available for Windows
 
 ## Getting Started
