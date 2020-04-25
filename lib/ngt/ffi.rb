@@ -2,7 +2,15 @@ module Ngt
   module FFI
     extend ::FFI::Library
 
-    ffi_lib Ngt.ffi_lib
+    begin
+      ffi_lib Ngt.ffi_lib
+    rescue LoadError => e
+      if e.message.include?("Library not loaded: /usr/local/opt/libomp/lib/libomp.dylib") && e.message.include?("Reason: image not found")
+        raise LoadError, "OpenMP not found. Run `brew install libomp`"
+      else
+        raise e
+      end
+    end
 
     # https://github.com/yahoojapan/NGT/blob/master/lib/NGT/Capi.h
     # keep same order
