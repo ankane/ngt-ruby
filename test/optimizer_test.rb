@@ -15,6 +15,6 @@ class OptimizerTest < Minitest::Test
 
     optimizer = Ngt::Optimizer.new(queries: 1)
     optimizer.adjust_search_coefficients(index)
-    optimizer.execute(index, Dir.mktmpdir)
+    optimizer.execute(index, File.join(Dir.mktmpdir, "index"))
   end
 end
