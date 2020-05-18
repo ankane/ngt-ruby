@@ -1,4 +1,4 @@
-## 0.3.1 (unreleased)
+## 0.3.1 (2020-05-17)
 
 - Updated NGT to 1.11.5
 - Improved error message when OpenMP not found on Mac
