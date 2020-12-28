@@ -1,4 +1,4 @@
-## 0.3.2 (unreleased)
+## 0.3.2 (2020-12-27)
 
 - Updated NGT to 1.12.2
 
