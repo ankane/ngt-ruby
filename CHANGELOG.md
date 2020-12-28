@@ -1,3 +1,7 @@
+## 0.3.2 (unreleased)
+
+- Updated NGT to 1.12.2
+
 ## 0.3.1 (2020-05-17)
 
 - Updated NGT to 1.11.5
