@@ -24,6 +24,7 @@ namespace :vendor do
 
   task :mac do
     download_file("libngt.dylib")
+    download_file("libngt.arm64.dylib")
   end
 
   task :windows do

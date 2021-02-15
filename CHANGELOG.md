@@ -1,3 +1,7 @@
+## 0.3.3 (unreleased)
+
+- Added ARM shared library for Mac
+
 ## 0.3.2 (2020-12-27)
 
 - Updated NGT to 1.12.2
