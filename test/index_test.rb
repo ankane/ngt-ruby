@@ -61,6 +61,51 @@ class IndexTest < Minitest::Test
     assert_equal [1, 3, 2], result.map { |r| r[:id] }
   end
 
+  def test_zero_vector
+    dim = 4
+    objects = [
+      [1, 1, 2, 1],
+      [0, 0, 0, 0],
+      [1, 2, 1, 2],
+    ]
+
+    index = Ngt::Index.new(dim, distance_type: :cosine)
+    index.batch_insert(objects)
+    result = index.search(objects[0], size: 3)
+    # TODO decide how to handle
+    assert_equal [1], result.map { |r| r[:id] }
+  end
+
+  def test_nan
+    dim = 4
+    objects = [
+      [1, 1, 2, 1],
+      [Float::NAN, 1, 2, 3],
+      [1, 2, 1, 2],
+    ]
+
+    index = Ngt::Index.new(dim, distance_type: :cosine)
+    index.batch_insert(objects)
+    result = index.search(objects[0], size: 3)
+    # TODO decide how to handle
+    assert_equal [1], result.map { |r| r[:id] }
+  end
+
+  def test_infinite
+    dim = 4
+    objects = [
+      [1, 1, 2, 1],
+      [Float::INFINITY, 1, 2, 3],
+      [1, 2, 1, 2],
+    ]
+
+    index = Ngt::Index.new(dim, distance_type: :cosine)
+    index.batch_insert(objects)
+    result = index.search(objects[0], size: 3)
+    # TODO decide how to handle
+    assert_equal [1], result.map { |r| r[:id] }
+  end
+
   def test_numo
     dim = 4
     objects = [
