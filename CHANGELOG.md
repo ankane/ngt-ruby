@@ -1,3 +1,7 @@
+## 0.3.4 (unreleased)
+
+- Updated NGT to 1.13.5
+
 ## 0.3.3 (2021-02-15)
 
 - Added ARM shared library for Mac

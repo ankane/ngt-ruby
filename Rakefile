@@ -10,7 +10,7 @@ end
 def download_file(file, sha256)
   require "open-uri"
 
-  url = "https://github.com/ankane/ml-builds/releases/download/ngt-1.12.2/#{file}"
+  url = "https://github.com/ankane/ml-builds/releases/download/ngt-1.13.5/#{file}"
   puts "Downloading #{file}..."
   contents = URI.open(url).read
 
@@ -24,12 +24,12 @@ end
 
 namespace :vendor do
   task :linux do
-    download_file("libngt.so", "37cb5edfff759ef09835eb9e6bb33f7d9651bd9f30496c8da9a3f41e3b610cd6")
+    download_file("libngt.so", "7e842e0fba48192494fce5e70f2e134c50e9a69d1f8a9f55d6ffa65102c009ea")
   end
 
   task :mac do
-    download_file("libngt.dylib", "cdb736c1faf549d008b54fd816aedbe27201aa8a8e6a788d1b1f2fd2afa99e1f")
-    download_file("libngt.arm64.dylib", "70d2ab693bf985a4fc6ffe5fc562470842b12c832713f4a56bf1c850b27a0252")
+    download_file("libngt.dylib", "fcbdf4247bb7f5c1010980feacc8dcbad24edd2eb4e607032154e0b767721a83")
+    download_file("libngt.arm64.dylib", "c4c18e6e8b54eb19eb414a63a7f682e8a2440827cd57317ed9ee63e6ff11cd7c")
   end
 
   task :windows do
