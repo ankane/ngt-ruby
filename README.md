@@ -1,8 +1,8 @@
-# NGT
+# NGT Ruby
 
 [NGT](https://github.com/yahoojapan/NGT) - high-speed approximate nearest neighbors - for Ruby
 
-[![Build Status](https://github.com/ankane/ngt/workflows/build/badge.svg?branch=master)](https://github.com/ankane/ngt/actions)
+[![Build Status](https://github.com/ankane/ngt-ruby/workflows/build/badge.svg?branch=master)](https://github.com/ankane/ngt-ruby/actions)
 
 ## Installation
 
@@ -171,22 +171,22 @@ This library is modeled after NGT’s [Python API](https://github.com/yahoojapan
 
 ## History
 
-View the [changelog](https://github.com/ankane/ngt/blob/master/CHANGELOG.md)
+View the [changelog](https://github.com/ankane/ngt-ruby/blob/master/CHANGELOG.md)
 
 ## Contributing
 
 Everyone is encouraged to help improve this project. Here are a few ways you can help:
 
-- [Report bugs](https://github.com/ankane/ngt/issues)
-- Fix bugs and [submit pull requests](https://github.com/ankane/ngt/pulls)
+- [Report bugs](https://github.com/ankane/ngt-ruby/issues)
+- Fix bugs and [submit pull requests](https://github.com/ankane/ngt-ruby/pulls)
 - Write, clarify, or fix documentation
 - Suggest or add new features
 
 To get started with development:
 
 ```sh
-git clone https://github.com/ankane/ngt.git
-cd ngt
+git clone https://github.com/ankane/ngt-ruby.git
+cd ngt-ruby
 bundle install
 bundle exec rake vendor:all
 bundle exec rake test
