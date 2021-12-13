@@ -17,7 +17,7 @@ module Ngt
     attr_accessor :ffi_lib
   end
   lib_name =
-    if RbConfig::CONFIG["host_os"] =~ /darwin/i && RbConfig::CONFIG["host_cpu"] =~ /arm/i
+    if RbConfig::CONFIG["host_os"] =~ /darwin/i && RbConfig::CONFIG["host_cpu"] =~ /arm|aarch64/i
       FFI.map_library_name("ngt.arm64")
     else
       FFI.map_library_name("ngt")
