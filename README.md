@@ -9,7 +9,7 @@
 Add this line to your application’s Gemfile:
 
 ```ruby
-gem 'ngt'
+gem "ngt"
 ```
 
 On Mac, also install OpenMP:
