@@ -1,33 +1,6 @@
 require_relative "test_helper"
 
 class IndexTest < Minitest::Test
-  def test_deprecated
-    dim = 4
-    objects = [
-      [1, 1, 2, 1],
-      [5, 4, 6, 5],
-      [1, 2, 1, 2]
-    ]
-
-    path = Dir.mktmpdir
-    index = Ngt::Index.create(path, dim)
-    assert_equal [1, 2, 3], index.batch_insert(objects)
-    index.save
-
-    query = objects[0]
-    result = index.search(query, size: 3)
-
-    assert_equal 3, result.size
-    assert_equal [1, 3, 2], result.map { |r| r[:id] }
-    assert_equal 0, result[0][:distance]
-    assert_in_delta 1.732050776481628, result[1][:distance]
-    assert_in_delta 7.549834251403809, result[2][:distance]
-
-    index = Ngt::Index.new(path)
-    result = index.search(query, size: 3)
-    assert_equal [1, 3, 2], result.map { |r| r[:id] }
-  end
-
   def test_works
     dim = 4
     objects = [

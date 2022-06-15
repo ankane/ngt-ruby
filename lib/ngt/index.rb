@@ -100,9 +100,8 @@ module Ngt
       FFI.ngt_destroy_results(results) if results
     end
 
-    def save(path2 = nil, path: nil)
-      warn "[ngt] Passing path as an option is deprecated - use an argument instead" if path
-      @path = path || path2 || @path || Dir.mktmpdir
+    def save(path = nil)
+      @path = path || @path || Dir.mktmpdir
       ffi(:ngt_save_index, @index, @path)
     end
 
@@ -114,13 +113,6 @@ module Ngt
         edge_size_for_search: 40, object_type: :float, distance_type: :l2)
 
       error = FFI.ngt_create_error_object
-
-      # TODO remove in 0.4.0
-      if !dimensions.is_a?(Integer) && !path
-        warn "[ngt] Passing a path to new is deprecated - use load instead"
-        path = dimensions
-        dimensions = nil
-      end
 
       if path && dimensions.nil?
         index = ffi(:ngt_open_index, path, error)
