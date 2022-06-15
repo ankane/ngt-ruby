@@ -16,13 +16,23 @@ module Ngt
   class << self
     attr_accessor :ffi_lib
   end
-  lib_name =
-    if RbConfig::CONFIG["host_os"] =~ /darwin/i && RbConfig::CONFIG["host_cpu"] =~ /arm|aarch64/i
-      FFI.map_library_name("ngt.arm64")
+  lib_path =
+    if Gem.win_platform?
+      "x64-mingw/ngt.dll"
+    elsif RbConfig::CONFIG["host_os"] =~ /darwin/i
+      if RbConfig::CONFIG["host_cpu"] =~ /arm|aarch64/i
+        "arm64-darwin/libngt.dylib"
+      else
+        "x86_64-darwin/libngt.dylib"
+      end
     else
-      FFI.map_library_name("ngt")
+      if RbConfig::CONFIG["host_cpu"] =~ /arm|aarch64/i
+        "aarch64-linux/libngt.so"
+      else
+        "x86_64-linux/libngt.so"
+      end
     end
-  vendor_lib = File.expand_path("../vendor/#{lib_name}", __dir__)
+  vendor_lib = File.expand_path("../vendor/#{lib_path}", __dir__)
   self.ffi_lib = [vendor_lib]
 
   # friendlier error message

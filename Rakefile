@@ -7,45 +7,72 @@ Rake::TestTask.new do |t|
   t.pattern = "test/**/*_test.rb"
 end
 
-def download_file(file, sha256)
-  require "open-uri"
+# ensure vendor files exist
+task :ensure_vendor do
+  vendor_config.fetch("platforms").each_key do |k|
+    raise "Missing directory: #{k}" unless Dir.exist?("vendor/#{k}")
+  end
+end
 
-  url = "https://github.com/ankane/ml-builds/releases/download/ngt-1.13.5/#{file}"
-  puts "Downloading #{file}..."
+Rake::Task["build"].enhance [:ensure_vendor]
+
+def download_platform(platform)
+  require "fileutils"
+  require "open-uri"
+  require "tmpdir"
+
+  config = vendor_config.fetch("platforms").fetch(platform)
+  url = config.fetch("url")
+  sha256 = config.fetch("sha256")
+
+  puts "Downloading #{url}..."
   contents = URI.open(url).read
 
   computed_sha256 = Digest::SHA256.hexdigest(contents)
   raise "Bad hash: #{computed_sha256}" if computed_sha256 != sha256
 
-  dest = "vendor/#{file}"
-  File.binwrite(dest, contents)
-  puts "Saved #{dest}"
+  file = Tempfile.new(binmode: true)
+  file.write(contents)
+
+  vendor = File.expand_path("vendor", __dir__)
+  FileUtils.mkdir_p(vendor)
+
+  dest = File.join(vendor, platform)
+  FileUtils.rm_r(dest) if Dir.exist?(dest)
+
+  # run apt install unzip on Linux
+  system "unzip", "-q", file.path, "-d", dest, exception: true
+end
+
+def vendor_config
+  @vendor_config ||= begin
+    require "yaml"
+    YAML.safe_load_file("vendor.yml")
+  end
 end
 
 namespace :vendor do
-  task :linux do
-    download_file("libngt.so", "7e842e0fba48192494fce5e70f2e134c50e9a69d1f8a9f55d6ffa65102c009ea")
+  task :all do
+    vendor_config.fetch("platforms").each_key do |k|
+      download_platform(k)
+    end
   end
-
-  task :mac do
-    download_file("libngt.dylib", "fcbdf4247bb7f5c1010980feacc8dcbad24edd2eb4e607032154e0b767721a83")
-    download_file("libngt.arm64.dylib", "c4c18e6e8b54eb19eb414a63a7f682e8a2440827cd57317ed9ee63e6ff11cd7c")
-  end
-
-  task :windows do
-    # not available yet
-    # download_file("ngt.dll")
-  end
-
-  task all: [:linux, :mac, :windows]
 
   task :platform do
     if Gem.win_platform?
-      Rake::Task["vendor:windows"].invoke
+      download_platform("x64-mingw")
     elsif RbConfig::CONFIG["host_os"] =~ /darwin/i
-      Rake::Task["vendor:mac"].invoke
+      if RbConfig::CONFIG["host_cpu"] =~ /arm|aarch64/i
+        download_platform("arm64-darwin")
+      else
+        download_platform("x86_64-darwin")
+      end
     else
-      Rake::Task["vendor:linux"].invoke
+      if RbConfig::CONFIG["host_cpu"] =~ /arm|aarch64/i
+        download_platform("aarch64-linux")
+      else
+        download_platform("x86_64-linux")
+      end
     end
   end
 end

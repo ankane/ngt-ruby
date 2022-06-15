@@ -1,6 +1,7 @@
-## 0.3.4 (unreleased)
+## 0.4.0 (unreleased)
 
-- Updated NGT to 1.13.5
+- Updated NGT to 1.14.6
+- Added ARM shared library for Linux
 - Improved ARM detection
 
 ## 0.3.3 (2021-02-15)
