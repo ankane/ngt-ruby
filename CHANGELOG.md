@@ -3,6 +3,7 @@
 - Updated NGT to 1.14.6
 - Added ARM shared library for Linux
 - Improved ARM detection
+- Dropped support for Ruby < 2.7
 
 ## 0.3.3 (2021-02-15)
 
