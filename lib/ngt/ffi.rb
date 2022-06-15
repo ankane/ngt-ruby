@@ -68,15 +68,10 @@ module Ngt
     attach_function :ngt_create_error_object, %i[], :pointer
     attach_function :ngt_get_error_string, %i[pointer], :string
     attach_function :ngt_destroy_error_object, %i[pointer], :void
-
-    begin
-      attach_function :ngt_create_optimizer, %i[bool pointer], :pointer
-      attach_function :ngt_optimizer_adjust_search_coefficients, %i[pointer string pointer], :bool
-      attach_function :ngt_optimizer_execute, %i[pointer string string pointer], :bool
-      attach_function :ngt_optimizer_set, %i[pointer int int int float float float float double double pointer], :bool
-      attach_function :ngt_destroy_optimizer, %i[pointer], :void
-    rescue ::FFI::NotFoundError
-      # only available in 1.8.1+
-    end
+    attach_function :ngt_create_optimizer, %i[bool pointer], :pointer
+    attach_function :ngt_optimizer_adjust_search_coefficients, %i[pointer string pointer], :bool
+    attach_function :ngt_optimizer_execute, %i[pointer string string pointer], :bool
+    attach_function :ngt_optimizer_set, %i[pointer int int int float float float float double double pointer], :bool
+    attach_function :ngt_destroy_optimizer, %i[pointer], :void
   end
 end

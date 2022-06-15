@@ -3,8 +3,6 @@ module Ngt
     include Utils
 
     def initialize(outgoing: 10, incoming: 120, queries: 100, low_accuracy_from: 0.3, low_accuracy_to: 0.5, high_accuracy_from: 0.8, high_accuracy_to: 0.9, gt_epsilon: 0.1, merge: 0.2)
-      raise Error, "Upgrade to NGT 1.8.1+ to use the optimizer" unless FFI.respond_to?(:ngt_create_optimizer)
-
       @error = FFI.ngt_create_error_object
       @optimizer = ffi(:ngt_create_optimizer, true)
 
