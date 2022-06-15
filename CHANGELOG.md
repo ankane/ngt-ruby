@@ -1,4 +1,4 @@
-## 0.4.0 (unreleased)
+## 0.4.0 (2022-06-14)
 
 - Updated NGT to 1.14.6
 - Added ARM shared library for Linux
