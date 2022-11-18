@@ -1,3 +1,7 @@
+## 0.4.1 (unreleased)
+
+- Fixed error with `object` method
+
 ## 0.4.0 (2022-06-14)
 
 - Updated NGT to 1.14.6

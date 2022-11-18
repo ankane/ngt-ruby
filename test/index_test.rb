@@ -109,6 +109,13 @@ class IndexTest < Minitest::Test
     assert_match "Dimension is not specified", error.message
   end
 
+  def test_object_type_integer
+    object = [1, 2, 3, 4]
+    index = Ngt::Index.new(4, object_type: :integer)
+    index.batch_insert([object])
+    assert_equal object, index.object(1)
+  end
+
   def test_bad_object_type
     error = assert_raises(ArgumentError) do
       Ngt::Index.new(10, object_type: "bad")

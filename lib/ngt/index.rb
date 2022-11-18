@@ -70,10 +70,10 @@ module Ngt
 
     def object(id)
       if object_type == :float
-        res = ffi(:ngt_get_object_as_float, @object_space, id)
+        res = ffi(:ngt_get_object_as_float, object_space, id)
         res.read_array_of_float(dimensions)
       else
-        res = ffi(:ngt_get_object_as_integer, @object_space, id)
+        res = ffi(:ngt_get_object_as_integer, object_space, id)
         res.read_array_of_uint8(dimensions)
       end
     end
@@ -199,6 +199,10 @@ module Ngt
       c_object = ::FFI::MemoryPointer.new(:double, object.size)
       c_object.write_array_of_double(object)
       c_object
+    end
+
+    def object_space
+      @object_space ||= ffi(:ngt_get_object_space, @index)
     end
   end
 end
