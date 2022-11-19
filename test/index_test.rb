@@ -120,6 +120,18 @@ class IndexTest < Minitest::Test
     assert_equal 2, result.size
   end
 
+  def test_object_type_float16
+    object = [1.5, 2.5, 3.5]
+    index = Ngt::Index.new(3, object_type: :float16)
+    assert_equal :float16, index.object_type
+    assert_equal 1, index.insert(object)
+    assert_equal true, index.build_index
+    error = assert_raises(Ngt::Error) do
+      index.object(1)
+    end
+    assert_equal "Method not supported for this object type", error.message
+  end
+
   def test_object_type_integer
     object = [1, 2, 3]
     index = Ngt::Index.new(3, object_type: :integer)

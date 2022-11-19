@@ -36,8 +36,10 @@ module Ngt
     attach_function :ngt_set_property_edge_size_for_creation, %i[pointer int16_t pointer], :bool
     attach_function :ngt_set_property_edge_size_for_search, %i[pointer int16_t pointer], :bool
     attach_function :ngt_is_property_object_type_float, %i[int32_t], :bool
+    attach_function :ngt_is_property_object_type_float16, %i[int32_t], :bool
     attach_function :ngt_get_property_object_type, %i[pointer pointer], :int32_t
     attach_function :ngt_set_property_object_type_float, %i[pointer pointer], :bool
+    attach_function :ngt_set_property_object_type_float16, %i[pointer pointer], :bool
     attach_function :ngt_set_property_object_type_integer, %i[pointer pointer], :bool
     attach_function :ngt_set_property_distance_type_l1, %i[pointer pointer], :bool
     attach_function :ngt_set_property_distance_type_l2, %i[pointer pointer], :bool

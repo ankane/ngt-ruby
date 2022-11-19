@@ -34,7 +34,13 @@ module Ngt
     def object_type
       @object_type ||= begin
         object_type = ffi(:ngt_get_property_object_type, @property)
-        FFI.ngt_is_property_object_type_float(object_type) ? :float : :integer
+        if FFI.ngt_is_property_object_type_float(object_type)
+          :float
+        elsif FFI.ngt_is_property_object_type_float16(object_type)
+          :float16
+        else
+          :integer
+        end
       end
     end
 
@@ -72,9 +78,11 @@ module Ngt
       if object_type == :float
         res = ffi(:ngt_get_object_as_float, object_space, id)
         res.read_array_of_float(dimensions)
-      else
+      elsif object_type == :integer
         res = ffi(:ngt_get_object_as_integer, object_space, id)
         res.read_array_of_uint8(dimensions)
+      else
+        raise Error, "Method not supported for this object type"
       end
     end
 
@@ -125,6 +133,8 @@ module Ngt
         case object_type.to_s.downcase
         when "float"
           ffi(:ngt_set_property_object_type_float, property, error)
+        when "float16"
+          ffi(:ngt_set_property_object_type_float16, property, error)
         when "integer"
           ffi(:ngt_set_property_object_type_integer, property, error)
         else

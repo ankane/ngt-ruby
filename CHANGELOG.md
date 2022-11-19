@@ -1,5 +1,6 @@
 ## 0.4.1 (unreleased)
 
+- Added support for `:float16` object type
 - Fixed error with `object` method
 
 ## 0.4.0 (2022-06-14)
