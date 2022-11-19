@@ -102,19 +102,19 @@ class IndexTest < Minitest::Test
     assert_in_delta 7.549834251403809, result[2][:distance]
   end
 
-  def test_ffi_error
-    error = assert_raises(Ngt::Error) do
-      Ngt::Index.new(0, path: Dir.mktmpdir)
-    end
-    assert_match "Dimension is not specified", error.message
-  end
-
   def test_object_type_integer
     object = [1, 2, 3, 4]
     index = Ngt::Index.new(4, object_type: :integer)
     index.batch_insert([object])
     assert_equal :integer, index.object_type
     assert_equal object, index.object(1)
+  end
+
+  def test_ffi_error
+    error = assert_raises(Ngt::Error) do
+      Ngt::Index.new(0, path: Dir.mktmpdir)
+    end
+    assert_match "Dimension is not specified", error.message
   end
 
   def test_bad_object_type
