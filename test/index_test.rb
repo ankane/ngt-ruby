@@ -2,14 +2,13 @@ require_relative "test_helper"
 
 class IndexTest < Minitest::Test
   def test_works
-    dim = 4
     objects = [
       [1, 1, 2, 1],
       [5, 4, 6, 5],
       [1, 2, 1, 2]
     ]
 
-    index = Ngt::Index.new(dim)
+    index = Ngt::Index.new(4)
     assert_equal :l2, index.distance_type
     assert_equal 10, index.edge_size_for_creation
     assert_equal 40, index.edge_size_for_search
@@ -35,14 +34,13 @@ class IndexTest < Minitest::Test
   end
 
   def test_zero_vector
-    dim = 4
     objects = [
       [1, 1, 2, 1],
       [0, 0, 0, 0],
       [1, 2, 1, 2],
     ]
 
-    index = Ngt::Index.new(dim, distance_type: :cosine)
+    index = Ngt::Index.new(4, distance_type: :cosine)
     index.batch_insert(objects)
     result = index.search(objects[0], size: 3)
     # TODO decide how to handle
@@ -50,14 +48,13 @@ class IndexTest < Minitest::Test
   end
 
   def test_nan
-    dim = 4
     objects = [
       [1, 1, 2, 1],
       [Float::NAN, 1, 2, 3],
       [1, 2, 1, 2],
     ]
 
-    index = Ngt::Index.new(dim, distance_type: :cosine)
+    index = Ngt::Index.new(4, distance_type: :cosine)
     index.batch_insert(objects)
     result = index.search(objects[0], size: 3)
     # TODO decide how to handle
@@ -65,14 +62,13 @@ class IndexTest < Minitest::Test
   end
 
   def test_infinite
-    dim = 4
     objects = [
       [1, 1, 2, 1],
       [Float::INFINITY, 1, 2, 3],
       [1, 2, 1, 2],
     ]
 
-    index = Ngt::Index.new(dim, distance_type: :cosine)
+    index = Ngt::Index.new(4, distance_type: :cosine)
     index.batch_insert(objects)
     result = index.search(objects[0], size: 3)
     # TODO decide how to handle
@@ -80,7 +76,6 @@ class IndexTest < Minitest::Test
   end
 
   def test_numo
-    dim = 4
     objects = [
       [1, 1, 2, 1],
       [5, 4, 6, 5],
@@ -88,7 +83,7 @@ class IndexTest < Minitest::Test
     ]
     objects = Numo::DFloat.cast(objects)
 
-    index = Ngt::Index.new(dim)
+    index = Ngt::Index.new(4)
     assert_equal [1, 2, 3], index.batch_insert(objects)
     assert_equal true, index.save
 
@@ -126,11 +121,11 @@ class IndexTest < Minitest::Test
   end
 
   def test_object_type_integer
-    object = [1, 2, 3, 4]
-    index = Ngt::Index.new(4, object_type: :integer)
+    object = [1, 2, 3]
+    index = Ngt::Index.new(3, object_type: :integer)
+    assert_equal :integer, index.object_type
     assert_equal 1, index.insert(object)
     assert_equal true, index.build_index
-    assert_equal :integer, index.object_type
     assert_equal object, index.object(1)
   end
 
@@ -143,14 +138,14 @@ class IndexTest < Minitest::Test
 
   def test_bad_object_type
     error = assert_raises(ArgumentError) do
-      Ngt::Index.new(10, object_type: "bad")
+      Ngt::Index.new(3, object_type: "bad")
     end
     assert_equal "Unknown object type: bad", error.message
   end
 
   def test_bad_distance_type
     error = assert_raises(ArgumentError) do
-      Ngt::Index.new(10, distance_type: "bad")
+      Ngt::Index.new(3, distance_type: "bad")
     end
     assert_equal "Unknown distance type: bad", error.message
   end
