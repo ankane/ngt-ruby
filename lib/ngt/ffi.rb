@@ -67,6 +67,7 @@ module Ngt
     attach_function :ngt_get_property_distance_type, %i[pointer pointer], :distance_type
     attach_function :ngt_create_error_object, %i[], :pointer
     attach_function :ngt_get_error_string, %i[pointer], :string
+    attach_function :ngt_clear_error_string, %i[pointer], :void
     attach_function :ngt_destroy_error_object, %i[pointer], :void
     attach_function :ngt_create_optimizer, %i[bool pointer], :pointer
     attach_function :ngt_optimizer_adjust_search_coefficients, %i[pointer string pointer], :bool
