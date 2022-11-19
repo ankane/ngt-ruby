@@ -105,7 +105,7 @@ class IndexTest < Minitest::Test
   def test_object_type_integer
     object = [1, 2, 3, 4]
     index = Ngt::Index.new(4, object_type: :integer)
-    index.insert(object)
+    assert_equal 1, index.insert(object)
     assert_equal true, index.build_index
     assert_equal :integer, index.object_type
     assert_equal object, index.object(1)
