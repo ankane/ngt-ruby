@@ -166,4 +166,27 @@ class IndexTest < Minitest::Test
     end
     assert_equal "Unknown distance type: bad", error.message
   end
+
+  def test_insert_bad_dimensions
+    error = assert_raises(ArgumentError) do
+      Ngt::Index.new(3).insert([1, 2])
+    end
+    assert_equal "Bad dimensions", error.message
+  end
+
+  def test_batch_insert_bad_dimensions
+    error = assert_raises(ArgumentError) do
+      Ngt::Index.new(3).batch_insert([[1, 2]])
+    end
+    assert_equal "Bad dimensions", error.message
+  end
+
+  def test_search_bad_dimensions
+    index = Ngt::Index.new(3)
+    index.insert([1, 2, 3])
+    error = assert_raises(ArgumentError) do
+      index.search([1, 2])
+    end
+    assert_equal "Bad dimensions", error.message
+  end
 end

@@ -45,17 +45,23 @@ module Ngt
     end
 
     def insert(object)
-      ffi(:ngt_insert_index, @index, c_object(object.to_a), dimensions)
+      object = object.to_a
+      ffi(:ngt_insert_index, @index, c_object(object), object.size)
     end
 
     def batch_insert(objects, num_threads: 8)
       if narray?(objects)
+        raise ArgumentError, "Bad dimensions" if objects.shape[1] != dimensions
+
         objects = objects.cast_to(Numo::SFloat) unless objects.is_a?(Numo::SFloat)
         count = objects.shape[0]
         obj = ::FFI::MemoryPointer.new(:char, objects.byte_size)
         obj.write_bytes(objects.to_binary)
       else
         objects = objects.to_a
+        objects.each do |object|
+          raise ArgumentError, "Bad dimensions" if object.size != dimensions
+        end
         count = objects.size
         flat_objects = objects.flatten
         obj = ::FFI::MemoryPointer.new(:float, flat_objects.size)
@@ -93,7 +99,8 @@ module Ngt
     def search(query, size: 20, epsilon: 0.1, radius: nil)
       radius ||= -1.0
       results = ffi(:ngt_create_empty_results)
-      ffi(:ngt_search_index, @index, c_object(query.to_a), dimensions, size, epsilon, radius, results)
+      query = query.to_a
+      ffi(:ngt_search_index, @index, c_object(query), query.size, size, epsilon, radius, results)
       result_size = ffi(:ngt_get_result_size, results)
       ret = []
       result_size.times do |i|
@@ -206,6 +213,7 @@ module Ngt
     end
 
     def c_object(object)
+      raise ArgumentError, "Bad dimensions" if object.size != dimensions
       c_object = ::FFI::MemoryPointer.new(:double, object.size)
       c_object.write_array_of_double(object)
       c_object
