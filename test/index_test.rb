@@ -141,6 +141,11 @@ class IndexTest < Minitest::Test
     assert_equal object, index.object(1)
   end
 
+  def test_empty
+    index = Ngt::Index.new(3)
+    assert_empty index.batch_insert([])
+  end
+
   def test_ffi_error
     error = assert_raises(Ngt::Error) do
       Ngt::Index.new(0, path: Dir.mktmpdir)
