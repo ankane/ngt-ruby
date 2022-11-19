@@ -17,7 +17,7 @@ class IndexTest < Minitest::Test
 
     assert_equal [1, 2, 3], index.batch_insert(objects)
     path = Dir.mktmpdir
-    index.save(path)
+    assert_equal true, index.save(path)
 
     query = objects[0]
     result = index.search(query, size: 3)
@@ -90,7 +90,7 @@ class IndexTest < Minitest::Test
 
     index = Ngt::Index.new(dim)
     assert_equal [1, 2, 3], index.batch_insert(objects)
-    index.save
+    assert_equal true, index.save
 
     query = objects[0, true]
     result = index.search(query, size: 3)
@@ -105,7 +105,8 @@ class IndexTest < Minitest::Test
   def test_object_type_integer
     object = [1, 2, 3, 4]
     index = Ngt::Index.new(4, object_type: :integer)
-    index.batch_insert([object])
+    index.insert(object)
+    assert_equal true, index.build_index
     assert_equal :integer, index.object_type
     assert_equal object, index.object(1)
   end
