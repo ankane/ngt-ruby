@@ -102,6 +102,29 @@ class IndexTest < Minitest::Test
     assert_in_delta 7.549834251403809, result[2][:distance]
   end
 
+  def test_remove
+    objects = [
+      [1, 1, 2, 1],
+      [5, 4, 6, 5],
+      [1, 2, 1, 2]
+    ]
+
+    index = Ngt::Index.new(4)
+    assert_equal [1, 2, 3], index.batch_insert(objects)
+
+    assert_equal true, index.remove(3)
+    # TODO remove assert_raises in 0.5.0
+    assert_raises do
+      assert_equal false, index.remove(3)
+    end
+    assert_raises do
+      assert_equal false, index.remove(4)
+    end
+
+    result = index.search(objects[0])
+    assert_equal 2, result.size
+  end
+
   def test_object_type_integer
     object = [1, 2, 3, 4]
     index = Ngt::Index.new(4, object_type: :integer)
