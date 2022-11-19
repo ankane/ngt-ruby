@@ -51,7 +51,7 @@ module Ngt
 
     def batch_insert(objects, num_threads: 8)
       if narray?(objects)
-        raise ArgumentError, "Bad dimensions" if objects.shape[1] != dimensions
+        check_dimensions(objects.shape[1])
 
         objects = objects.cast_to(Numo::SFloat) unless objects.is_a?(Numo::SFloat)
         count = objects.shape[0]
@@ -60,7 +60,7 @@ module Ngt
       else
         objects = objects.to_a
         objects.each do |object|
-          raise ArgumentError, "Bad dimensions" if object.size != dimensions
+          check_dimensions(object.size)
         end
         count = objects.size
         flat_objects = objects.flatten
@@ -213,10 +213,14 @@ module Ngt
     end
 
     def c_object(object)
-      raise ArgumentError, "Bad dimensions" if object.size != dimensions
+      check_dimensions(object.size)
       c_object = ::FFI::MemoryPointer.new(:double, object.size)
       c_object.write_array_of_double(object)
       c_object
+    end
+
+    def check_dimensions(d)
+      raise ArgumentError, "Bad dimensions" if d != dimensions
     end
 
     def object_space
