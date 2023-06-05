@@ -5,10 +5,10 @@ require "ffi"
 require "tmpdir"
 
 # modules
-require "ngt/utils"
-require "ngt/index"
-require "ngt/optimizer"
-require "ngt/version"
+require_relative "ngt/utils"
+require_relative "ngt/index"
+require_relative "ngt/optimizer"
+require_relative "ngt/version"
 
 module Ngt
   class Error < StandardError; end
