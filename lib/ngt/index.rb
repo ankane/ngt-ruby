@@ -9,10 +9,11 @@ module Ngt
       @path = path
 
       @error = FFI.ngt_create_error_object
-      @property = ffi(:ngt_create_property)
-      ffi(:ngt_get_property, @index, @property)
+      ObjectSpace.define_finalizer(@error, self.class.finalize_error(@error.to_i))
 
-      ObjectSpace.define_finalizer(self, self.class.finalize(@error, @index, @property))
+      @property = ffi(:ngt_create_property)
+      ObjectSpace.define_finalizer(@property, self.class.finalize_property(@property.to_i))
+      ffi(:ngt_get_property, @index, @property)
     end
 
     def dimensions
@@ -177,6 +178,8 @@ module Ngt
           end
       end
 
+      ObjectSpace.define_finalizer(index, finalize_index(index.to_i))
+
       super(index, path)
     ensure
       FFI.ngt_destroy_error_object(error) if error
@@ -197,13 +200,19 @@ module Ngt
       Utils.ffi(*args)
     end
 
-    def self.finalize(error, index, property)
+    def self.finalize_index(addr)
       # must use proc instead of stabby lambda
-      proc do
-        FFI.ngt_destroy_error_object(error)
-        FFI.ngt_close_index(index)
-        FFI.ngt_destroy_property(property)
-      end
+      proc { FFI.ngt_close_index(::FFI::Pointer.new(:pointer, addr)) }
+    end
+
+    def self.finalize_error(addr)
+      # must use proc instead of stabby lambda
+      proc { FFI.ngt_destroy_error_object(::FFI::Pointer.new(:pointer, addr)) }
+    end
+
+    def self.finalize_property(addr)
+      # must use proc instead of stabby lambda
+      proc { FFI.ngt_destroy_property(::FFI::Pointer.new(:pointer, addr)) }
     end
 
     private

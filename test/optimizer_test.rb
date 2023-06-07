@@ -17,4 +17,10 @@ class OptimizerTest < Minitest::Test
     optimizer.adjust_search_coefficients(index)
     optimizer.execute(index, File.join(Dir.mktmpdir, "index"))
   end
+
+  def test_copy
+    optimizer = Ngt::Optimizer.new(queries: 1)
+    optimizer.dup
+    optimizer.clone
+  end
 end

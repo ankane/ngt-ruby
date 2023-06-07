@@ -1,3 +1,7 @@
+## 0.4.2 (unreleased)
+
+- Fixed error with `dup` and `clone`
+
 ## 0.4.1 (2022-12-08)
 
 - Added support for `:float16` object type

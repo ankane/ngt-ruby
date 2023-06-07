@@ -189,4 +189,10 @@ class IndexTest < Minitest::Test
     end
     assert_equal "Bad dimensions", error.message
   end
+
+  def test_copy
+    index = Ngt::Index.new(4)
+    index.dup
+    index.clone
+  end
 end
