@@ -37,7 +37,7 @@ class IndexTest < Minitest::Test
     objects = [
       [1, 1, 2, 1],
       [0, 0, 0, 0],
-      [1, 2, 1, 2],
+      [1, 2, 1, 2]
     ]
 
     index = Ngt::Index.new(4, distance_type: :cosine)
@@ -51,7 +51,7 @@ class IndexTest < Minitest::Test
     objects = [
       [1, 1, 2, 1],
       [Float::NAN, 1, 2, 3],
-      [1, 2, 1, 2],
+      [1, 2, 1, 2]
     ]
 
     index = Ngt::Index.new(4, distance_type: :cosine)
@@ -65,7 +65,7 @@ class IndexTest < Minitest::Test
     objects = [
       [1, 1, 2, 1],
       [Float::INFINITY, 1, 2, 3],
-      [1, 2, 1, 2],
+      [1, 2, 1, 2]
     ]
 
     index = Ngt::Index.new(4, distance_type: :cosine)
