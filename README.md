@@ -2,7 +2,7 @@
 
 [NGT](https://github.com/yahoojapan/NGT) - high-speed approximate nearest neighbors - for Ruby
 
-[![Build Status](https://github.com/ankane/ngt-ruby/workflows/build/badge.svg?branch=master)](https://github.com/ankane/ngt-ruby/actions)
+[![Build Status](https://github.com/ankane/ngt-ruby/actions/workflows/build.yml/badge.svg)](https://github.com/ankane/ngt-ruby/actions)
 
 ## Installation
 
