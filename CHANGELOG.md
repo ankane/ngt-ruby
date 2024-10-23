@@ -1,3 +1,7 @@
+## 0.5.0 (unreleased)
+
+- Dropped support for Ruby < 3.1
+
 ## 0.4.2 (2023-07-24)
 
 - Fixed error with `dup` and `clone`
