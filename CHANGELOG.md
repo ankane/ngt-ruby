@@ -1,4 +1,4 @@
-## 0.5.0 (unreleased)
+## 0.5.0 (2024-10-23)
 
 - Updated NGT to 2.2.4
 - Dropped support for Ruby < 3.1
