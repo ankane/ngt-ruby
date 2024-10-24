@@ -1,5 +1,6 @@
 ## 0.5.0 (unreleased)
 
+- Updated NGT to 2.2.4
 - Dropped support for Ruby < 3.1
 
 ## 0.4.2 (2023-07-24)
