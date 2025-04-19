@@ -76,6 +76,10 @@ class IndexTest < Minitest::Test
   end
 
   def test_numo
+    skip if RUBY_PLATFORM == "java"
+
+    require "numo/narray"
+
     objects = [
       [1, 1, 2, 1],
       [5, 4, 6, 5],
