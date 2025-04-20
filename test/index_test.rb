@@ -76,7 +76,7 @@ class IndexTest < Minitest::Test
   end
 
   def test_numo
-    skip if RUBY_PLATFORM == "java"
+    skip if ["jruby", "truffleruby"].include?(RUBY_ENGINE)
 
     objects = [
       [1, 1, 2, 1],
