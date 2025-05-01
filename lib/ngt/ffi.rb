@@ -76,14 +76,5 @@ module Ngt
     attach_function :ngt_optimizer_execute, %i[pointer string string pointer], :bool
     attach_function :ngt_optimizer_set, %i[pointer int int int float float float float double double pointer], :bool
     attach_function :ngt_destroy_optimizer, %i[pointer], :void
-
-    def self.add_finalizer(pointer, method)
-      ObjectSpace.define_finalizer(pointer, finalize(pointer.to_i, method))
-    end
-
-    def self.finalize(addr, method)
-      # must use proc instead of stabby lambda
-      proc { FFI.send(method, ::FFI::Pointer.new(:pointer, addr)) }
-    end
   end
 end

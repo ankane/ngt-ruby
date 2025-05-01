@@ -9,10 +9,10 @@ module Ngt
       @path = path
 
       @error = FFI.ngt_create_error_object
-      FFI.add_finalizer(@error, :ngt_destroy_error_object)
+      @error = ::FFI::AutoPointer.new(@error, FFI.method(:ngt_destroy_error_object))
 
       @property = ffi(:ngt_create_property)
-      FFI.add_finalizer(@property, :ngt_destroy_property)
+      @property = ::FFI::AutoPointer.new(@property, FFI.method(:ngt_destroy_property))
       ffi(:ngt_get_property, @index, @property)
     end
 
@@ -178,7 +178,7 @@ module Ngt
           end
       end
 
-      FFI.add_finalizer(index, :ngt_close_index)
+      index = ::FFI::AutoPointer.new(index, FFI.method(:ngt_close_index))
 
       super(index, path)
     ensure
