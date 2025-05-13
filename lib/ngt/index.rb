@@ -125,9 +125,14 @@ module Ngt
       FFI.ngt_close_index(@index)
     end
 
-    def self.new(dimensions, path: nil, edge_size_for_creation: 10,
-        edge_size_for_search: 40, object_type: :float, distance_type: :l2)
-
+    def self.new(
+      dimensions,
+      path: nil,
+      edge_size_for_creation: 10,
+      edge_size_for_search: 40,
+      object_type: :float,
+      distance_type: :l2
+    )
       error = FFI.ngt_create_error_object
 
       if path && dimensions.nil?
