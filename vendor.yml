@@ -1,13 +1,13 @@
 platforms:
   x86_64-linux:
-    url: https://github.com/ankane/ml-builds/releases/download/ngt-2.2.4/ngt-2.2.4-x86_64-linux.zip
-    sha256: f670bb79bba222679da90d9247ae4ec5d4c40654af52d0a6cdc8b57f71315ccd
+    url: https://github.com/ankane/ml-builds/releases/download/ngt-2.6.0/ngt-2.6.0-x86_64-linux.zip
+    sha256: 9b083b370d69bc22b5f701b51f3c0bcafedb7853930f352687262aa58ae29c98
   aarch64-linux:
-    url: https://github.com/ankane/ml-builds/releases/download/ngt-2.2.4/ngt-2.2.4-aarch64-linux.zip
-    sha256: 25e0462ffbaf77a349571a2b5fb5eabf30c383c0edc38cd7dda96e590a0a1e1b
+    url: https://github.com/ankane/ml-builds/releases/download/ngt-2.6.0/ngt-2.6.0-aarch64-linux.zip
+    sha256: 294b6f4b61e8df8b4a874cfae23ee60db38119560e1974d722dd0074acdb37f9
   x86_64-darwin:
-    url: https://github.com/ankane/ml-builds/releases/download/ngt-2.2.4/ngt-2.2.4-x86_64-darwin.zip
-    sha256: 1537aacc16d6ba39567713f1e875817c76293175e8f084f67e476ca311a48c2c
+    url: https://github.com/ankane/ml-builds/releases/download/ngt-2.6.0/ngt-2.6.0-x86_64-darwin.zip
+    sha256: b3b04ce5d115529ca2891d6af29537026a9b54db7d4fdf0e292d2674f3b931b6
   arm64-darwin:
-    url: https://github.com/ankane/ml-builds/releases/download/ngt-2.2.4/ngt-2.2.4-aarch64-darwin.zip
-    sha256: 3cb717bca24d8d1707952595b7daa7c1259022eb060dfe5ded02a6ed0cc93cc5
+    url: https://github.com/ankane/ml-builds/releases/download/ngt-2.6.0/ngt-2.6.0-aarch64-darwin.zip
+    sha256: 320431e7a8afee6ae67e0f1d83e33cd3a4249e575ee22e18dd70bced6a4e9062

@@ -1,3 +1,7 @@
+## 0.6.0 (unreleased)
+
+- Updated NGT to 2.6.0
+
 ## 0.5.0 (2024-10-23)
 
 - Updated NGT to 2.2.4
