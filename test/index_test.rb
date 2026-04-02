@@ -110,7 +110,7 @@ class IndexTest < Minitest::Test
     assert_equal [1, 2, 3], index.batch_insert(objects)
 
     assert_equal true, index.remove(3)
-    # TODO remove assert_raises in 0.5.0
+    # TODO remove assert_raises in 0.7.0
     assert_raises do
       assert_equal false, index.remove(3)
     end
